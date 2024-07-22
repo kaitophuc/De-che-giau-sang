@@ -1,11 +1,28 @@
-# De-che-giau-sang
-Kỳ lân vào năm 2030
+# Calendar management system
 
-Productivity: Google calendar + Discord?
+All-in-one calendar management system. Have the ability to import Google Calendar and Microsoft Outlook and combine into one. It can also stream data, which means if you have an invitation into Google Calendar, this calaendar management system will also get updated.
 
-Cho người ta import các lịch của từng người => đề xuất thời gian họp?
+# Installation guide
 
-Vấn đề đầu tiên: merge các platform lại thành format của riêng mình
+First, install necessary modules:
 
-Web hay app? Web
+```
+cd frontend
+npm install
+cd ../backend
+npm install
+```
 
+Then, in one terminal, from the root directory of the project, start the backend server:
+
+```
+cd backend
+node --env-file=config.env main
+```
+
+Open another terminal, and start the frontend:
+
+```
+cd frontend
+npm run start
+```
