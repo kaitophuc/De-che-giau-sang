@@ -1,15 +1,13 @@
 FROM node:lts-bullseye
 
-ENV HOME=/home/app
+WORKDIR /usr/src/calendar-management-system
 
-RUN apt-get update && apt-get install htop
-
-COPY package.json package-lock.json $HOME/node_docker/
-
-WORKDIR $HOME/node_docker
+COPY package*.json ./
 
 RUN npm install --silent --progress=false
 
-COPY . $HOME/node_docker
+COPY . .
 
-CMD ["npm", "start"]
+EXPOSE 3000
+
+CMD ["npm","start"]

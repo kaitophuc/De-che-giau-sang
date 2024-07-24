@@ -24,5 +24,5 @@ Open another terminal, and start the frontend:
 
 ```
 cd frontend
-npm run start
+npm run dev
 ```
