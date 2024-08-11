@@ -1,12 +1,11 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import NavBar from './components/header/NavBar.tsx';
 
 const App = () => {
   return (
-    <div className="w-full p-6">
-      <Navbar />
-      <Outlet />
+    <div className="navbar">
+      <NavBar/>
     </div>
   );
 };
-export default App
+
+export default App;
