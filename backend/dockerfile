@@ -1,13 +1,21 @@
-FROM node:lts-bullseye
+# FROM node:lts-bullseye
 
-WORKDIR /usr/src/calendar-management-system
+# WORKDIR /usr/src/calendar-management-system
 
-COPY package*.json ./
+# COPY package*.json ./
 
-RUN npm install --silent --progress=false
+# RUN npm install --silent --progress=false
 
-COPY . .
+# COPY . .
 
+# EXPOSE 3000
+
+# CMD ["npm","start"]
+
+ARG NODE_VERSION=20
+
+FROM node:${NODE_VERSION}-alpine as base
+WORKDIR /usr/src/app
 EXPOSE 3000
 
-CMD ["npm","start"]
+
