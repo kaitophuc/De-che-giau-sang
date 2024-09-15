@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faBars, } from "@fortawesome/free-solid-svg-icons";
 
 import styles from './SideBar.module.css';
-import calendar_icon from '../../../public/calendar_icon.svg';
 
 interface CalendarIcon {
   fill: string;

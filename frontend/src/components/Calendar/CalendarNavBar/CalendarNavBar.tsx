@@ -39,7 +39,7 @@ const CalendarNavBar = () => {
   }
 
   return (
-    <div className={styles.calendar}>
+    <div className={styles.calendar_navbar}>
       <div className={styles.center}>
         <button className={styles.navigator} onClick={() => changeDate(true)}>
           <FontAwesomeIcon icon={faCircleChevronLeft} style={{ fontSize: '20px', color: '#C3CAD9' }}/>
