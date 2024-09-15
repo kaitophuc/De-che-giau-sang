@@ -1,0 +1,28 @@
+.grid_container > * {
+  border-bottom: 4px solid #F5F6F7;
+  border-right: 4px solid #F5F6F7;
+}
+
+.grid_container > h1, .clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%; /* Ensure it takes the full height of the grid cell */
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  padding: 13px 0 0 0;
+  border-left: 3px solid rgb(245, 246, 247);
+  width: 100%;
+}
+
+.day > h1 {
+  margin: 0 auto 0 auto;
+}
+
+.main_grid {
+  
+}

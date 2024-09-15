@@ -1,20 +1,45 @@
-.grid_container {
-  display: grid;
-  grid-template-rows: 40px 200px;
-  grid-template-columns: 40px auto auto auto auto auto auto auto;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.grid_container > * {
-  border: 1px solid #000000;
-}
-
-.grid_container > h1 {
+.calendar_container {
+  position: relative;
+  overflow: auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 0; /* Remove default margin */
-  height: 100%; /* Ensure it takes the full height of the grid cell */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.clock_color {
+  color: rgb(195, 202, 217);
+}
+
+.calendar_sideTime {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 10%;
+  margin: 50px 0 0 0;
+}
+
+.calendar_main {
+  display: flex;
+  flex-direction: row;
+  overflow-y: auto;
+  width: 90%;
+}
+
+.hourLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 3px;
+  width: 100%;
+  background-color: rgb(245, 246, 247);
+  margin: 0;
+  /* background-color: var(--main-grey); */
+}
+
+.hourBox {
+  margin: 13px 0 13px 40px;
 }
