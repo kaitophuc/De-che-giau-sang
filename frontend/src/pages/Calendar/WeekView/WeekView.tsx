@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
-import Day from './Day.tsx';
+import Day from './Day.js';
 
 import styles from './WeekView.module.css';
 

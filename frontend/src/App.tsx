@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import NavBar from './components/NavBar/NavBar.tsx';
-import SideBar from './components/SideBar/SideBar.tsx';
-import Calendar from './components/Calendar/Calendar.tsx';
+import NavBar from './pages/NavBar/NavBar.tsx';
+import SideBar from './pages/SideBar/SideBar.tsx';
+import Calendar from './pages/Calendar/Calendar.tsx';
 import styles from './App.module.css';
 
 const App = () => {

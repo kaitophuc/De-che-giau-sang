@@ -9,7 +9,7 @@
 }
 
 .clock_color {
-  color: rgb(195, 202, 217);
+  color: var(--main-background-color);
 }
 
 .calendar_sideTime {
