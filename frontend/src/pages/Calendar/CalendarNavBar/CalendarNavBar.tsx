@@ -6,10 +6,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './CalendarNavBar.module.css';
+import AddEvent from '../Event/AddEvent/AddEvent.tsx';
 
 const CalendarNavBar = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [view, setView] = useState('Week');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const date = new Date();
@@ -38,8 +40,25 @@ const CalendarNavBar = () => {
     setView(view);
   }
 
+  const newEvent = () => {
+    console.log('New event');
+    setIsModalOpen(true);
+  }
+
+  const handleSaveEvent = (date: string, description: string) => {
+    console.log(`New event saved: ${date} - ${description}`);
+    fetch(`http://localhost:5050/new_event?date=${date}&description=${description}`).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.error('Error: ', error);
+    })
+  }
+
   return (
     <div className={styles.calendar_navbar}>
+      <div className={styles.left}>
+        <button className={`${styles.addButton}`} onClick={newEvent}>New event</button>
+      </div>
       <div className={styles.center}>
         <button className={styles.navigator} onClick={() => changeDate(true)}>
           <FontAwesomeIcon icon={faCircleChevronLeft} style={{ fontSize: '20px', color: '#C3CAD9' }}/>
@@ -49,11 +68,16 @@ const CalendarNavBar = () => {
           <FontAwesomeIcon icon={faCircleChevronRight} style={{ fontSize: '20px', color: '#C3CAD9' }}/>
         </button>
       </div>
-      <div className={styles.view}>
+      <div className={styles.right}>
         <button className={`${styles.viewButton} ${view == 'Day' ? styles.active : ''}`} onClick={() => changeView('Day')}>Day</button>
         <button className={`${styles.viewButton} ${view == 'Week' ? styles.active : ''}`} onClick={() => changeView('Week')}>Week</button>
         <button className={`${styles.viewButton} ${view == 'Month' ? styles.active : ''}`} onClick={() => changeView('Month')}>Month</button>
       </div>
+      <AddEvent 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveEvent}
+      />
     </div>
   )
 }

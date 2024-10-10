@@ -1,0 +1,42 @@
+.calendar_navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 100px;
+}
+
+.left, .center, .right {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.center {
+  flex: 2;
+  justify-content: center;
+}
+
+.right {
+  flex: 1;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
+
+.date {
+  margin-top: 1.2%;
+}
+
+.addButton {
+  width: 100px;
+  border: 1px solid black;
+}
+
+.addButton, .navigator, .viewButton {
+  margin: 1.5% 1.5% 0 1.5%;
+}
