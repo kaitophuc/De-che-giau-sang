@@ -11,8 +11,26 @@ mongoose.connect('process.env.MONGODB_URI').then(() => {
 });
 
 const UserSchema = new mongoose.Schema({
-    date: Date,
-    description: String,
+    title: {
+        type: String,
+        required: true
+    },
+    place: {
+        type: String,
+        required: true
+    },
+    start_date: {
+        type: Date,
+        required: true
+    },
+    end_date: {
+        type: Date,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    }
 });
 
 const Events = mongoose.model('Calendar', UserSchema);
@@ -26,14 +44,22 @@ app.get('/Calendar_service', (req, res) => {
     });
 });
 
-//http://localhost:5050/new_event?date=2024-09-15&description=This%20is%20a%20test%20description
+//http://localhost:5050/new_event?date=2024-09-15&description=This%20is%20a%20test%20description&title=Test%20Event&place=Test%20Place&start_date=2024-09-15&end_date=2024-09-15
 app.get('/new_event', (req, res) => {
     // Access the query parameters from the URL
-    const { date, description } = req.query;
+    const { title, place, start_date, end_date, description } = req.query;
+
+    // Validate the query parameters
+    if (isNaN(Date.parse(start_date)) || isNaN(Date.parse(end_date))) {
+        return res.status(400).send('Invalid date format');
+    }
 
     // Create a new event instance
     const newEvent = new Events({
-        date: new Date(date),
+        title: title,
+        place: place,
+        start_date: new Date(start_date),
+        end_date: new Date(end_date),
         description: description
     });
 
