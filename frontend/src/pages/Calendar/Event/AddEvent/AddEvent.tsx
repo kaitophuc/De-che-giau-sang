@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -9,28 +10,86 @@ import styles from './AddEvent.module.css';
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (title: String,
+    place: String,
+    start_date: Date,
+    end_date: Date,
+    description: String) => void;
 }
 
 Modal.setAppElement('#root');
 
-const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
-  const [description, setDescription] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [selectedFriend, setSelectedFriend] = useState<string>('');
+const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
+  const [title, setEventTitle] = useState('');
+  const [place, setPlace] = useState('');
+  const [start_date, setStartDate] = useState('');
+  const [end_date, setEndDate] = useState('');
+  const [description, setDescription] = useState('');
 
-  const handleSave = (e: React.FormEvent) => {
+
+  /*const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    const title = document.getElementById('eventTitle') as HTMLInputElement;
+    const place = document.getElementById('place') as HTMLInputElement;
+    const start_date = document.getElementById('startDate') as HTMLInputElement;
+    const end_date = document.getElementById('endDate') as HTMLInputElement;
+    const description = document.getElementById('description') as HTMLInputElement;
+
+    const data = {
+      title: title.value,
+      place: place.value,
+      start: start_date.value,
+      end: endDate.value,
+      description: description.value
+    }
+
+    onSave(title, place, start_date, end_date, description);
+    onClose();
+  };*/
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(`New event saved: ${startDate} - ${endDate}: ${description}`);
-    fetch(`http://localhost:5050/new_event?date=${startDate}&description=${description}`).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.error('Error: ', error);
-    })
+    const data = {
+      title: title,
+      place: place,
+      start_date: new Date(start_date).toISOString(), // Ensure valid date format
+      end_date: new Date(end_date).toISOString(), // Ensure valid date format
+      description: description
+    };
 
-    onClose();
-  };
+    // Create URL with query parameters
+    const url = new URL('http://localhost:5050/new_event');
+    const params = new URLSearchParams({
+      title: title,
+      place: place,
+      start_date: new Date(start_date).toISOString(),
+      end_date: new Date(end_date).toISOString(),
+      description: description
+    });
+    url.search = params.toString();
+
+    try {
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const responseData = await response.json();
+      console.log('Success:', responseData);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  if (!isOpen) return null;
 
   return (
     <Modal
@@ -39,9 +98,15 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
       className={styles.modalContent}
       overlayClassName={styles.modalOverlay}
     >
-      <div className={styles.form}>
-        <div className={styles.header}>
-          <input type="text" id="eventTitle" placeholder="Event Title" className={styles.eventTitle}/>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.title}>
+          <input
+            type="text"
+            id="title"
+            placeholder="Event Title"
+            className={styles.titleInput}
+            onChange={(e) => setEventTitle(e.target.value)}
+          />
         </div>
         <div className={styles.place}>
           <input
@@ -49,6 +114,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             id="place"
             placeholder="Place"
             className={styles.placeInput}
+            onChange={(e) => setPlace(e.target.value)}
           />
         </div>
         <div className={styles.date}>
@@ -71,7 +137,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
-        <div className={styles.friendSelect}>
+        {/* <div className={styles.friendSelect}>
           <select
             id = "friendSelect"
             value={selectedFriend}
@@ -80,7 +146,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
           >
             <option value="" disabled>Select a friend</option>
           </select>
-        </div>
+        </div> */}
         <div className={styles.description}>
           <input
             type="text"
