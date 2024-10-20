@@ -10,7 +10,7 @@
 .navbar_content {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .page {
