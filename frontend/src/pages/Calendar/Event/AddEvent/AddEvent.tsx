@@ -9,24 +9,28 @@ import styles from './AddEvent.module.css';
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (date: string, description: string) => void;
 }
 
 Modal.setAppElement('#root');
 
-const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
+const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [selectedFriend, setSelectedFriend] = useState<String>('');
+  const [selectedFriend, setSelectedFriend] = useState<string>('');
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(startDate, description);
+
+    console.log(`New event saved: ${startDate} - ${endDate}: ${description}`);
+    fetch(`http://localhost:5050/new_event?date=${startDate}&description=${description}`).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.error('Error: ', error);
+    })
+
     onClose();
   };
-
-  if (!isOpen) return null;
 
   return (
     <Modal
@@ -35,7 +39,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
       className={styles.modalContent}
       overlayClassName={styles.modalOverlay}
     >
-      <form className={styles.form} onSubmit={handleSave}>
+      <div className={styles.form}>
         <div className={styles.header}>
           <input type="text" id="eventTitle" placeholder="Event Title" className={styles.eventTitle}/>
         </div>
@@ -89,11 +93,11 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose, onSave }) => {
           <button onClick={onClose} className={styles.closeButton}>
             Close <FontAwesomeIcon icon={faXmark} size="lg" />
           </button>
-          <button type="submit" className={styles.submitButton}>
+          <button onClick={handleSave} className={styles.submitButton}>
             Save <FontAwesomeIcon icon={faCheck} size="lg" />
           </button>
         </div>
-      </form>
+      </div>
     </Modal>
   )
 }

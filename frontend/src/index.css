@@ -4,4 +4,7 @@
 
 :root {
   --main-background-color: rgb(195, 202, 217);
+  --yellow-background-color: rgb(255, 255, 0);
+  --yellow-event: #FFCB33;
+  --green-event: #29CC39;
 }

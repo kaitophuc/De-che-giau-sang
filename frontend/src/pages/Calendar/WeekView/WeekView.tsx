@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
-import Day from './Day.js';
-
+import Day from './Day';
 import styles from './WeekView.module.css';
 
 const WeekView = () => {
@@ -22,7 +21,7 @@ const WeekView = () => {
     )
   }
 
-  for (let i = 0; i < 25; i++){
+  for (let i = 0; i <= 25; i++){
     const hourLinePosition = `${i * 50}px`;
     hourLines.push(
       <div className={styles.hourLine}

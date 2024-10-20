@@ -45,15 +45,6 @@ const CalendarNavBar = () => {
     setIsModalOpen(true);
   }
 
-  const handleSaveEvent = (date: string, description: string) => {
-    console.log(`New event saved: ${date} - ${description}`);
-    fetch(`http://localhost:5050/new_event?date=${date}&description=${description}`).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.error('Error: ', error);
-    })
-  }
-
   return (
     <div className={styles.calendar_navbar}>
       <div className={styles.left}>
@@ -75,8 +66,7 @@ const CalendarNavBar = () => {
       </div>
       <AddEvent 
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSaveEvent}
+        onClose= {() => setIsModalOpen(false)}
       />
     </div>
   )

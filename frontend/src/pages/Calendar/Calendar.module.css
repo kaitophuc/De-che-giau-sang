@@ -1,5 +1,26 @@
+.screen {
+  display: flex;
+  flex-direction: row;
+  background-color: #F7F8FA;
+  height: 100vh;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+}
+
+.nav {
+  width: 99%;
+}
+
+.main {
+  width: 99%;
+  height: 100%;
+}
+
 .calendar {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
+  height: 100%;
   /* padding: 10px 0 0 10px; */
 }
