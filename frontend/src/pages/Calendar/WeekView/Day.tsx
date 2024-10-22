@@ -35,14 +35,15 @@ const Day: React.FC<DayProps> = ({ name }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // fetch('/api/events').then((response) => {
-    //   if (!response.ok) {
-    //     throw new Error('Network response was not ok');
-    //   }
-    //   return response.json();
-    // }).then((data) => {
-    //   setEvents(data);
-    // });
+    fetch('http://localhost:5050/Calendar_service').then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }).then((data) => {
+      console.log(data);
+      setEvents(data);
+    });
   }, [])
 
   const handleMouseDown = (e: MouseEvent) => {
