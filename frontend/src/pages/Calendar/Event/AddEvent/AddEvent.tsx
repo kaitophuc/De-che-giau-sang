@@ -14,45 +14,37 @@ interface EventModalProps {
 Modal.setAppElement('#root');
 
 const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
-  const [title, setEventTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [place, setPlace] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
   const [selectedFriend, setSelectedFriend] = useState<string>('');
 
   const handleSave = async (e: any) => {
     e.preventDefault();
 
-    const data = {
-      title: title,
-      place: place,
-      start_date: new Date(startDate).toISOString(), // Ensure valid date format
-      end_date: new Date(endDate).toISOString(), // Ensure valid date format
-      description: description
-    };
-
     // Create URL with query parameters
-    const url = new URL('http://localhost:5050/new_event');
+    const url = new URL('http://localhost:5050/api/calendar/event');
     const params = new URLSearchParams({
       title: title,
       place: place,
-      start_date: new Date(startDate).toISOString(),
-      end_date: new Date(endDate).toISOString(),
+      startTime: new Date(startTime).toISOString(),
+      endTime: new Date(endTime).toISOString(),
       description: description
     });
     url.search = params.toString();
 
     try {
       const response = await fetch(url.toString(), {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`${response.status} ${response.statusText}`); // Error handling
       }
 
       const responseData = await response.json();
@@ -77,7 +69,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             id="title"
             placeholder="Event Title"
             className={styles.titleInput}
-            onChange={(e) => setEventTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className={styles.place}>
@@ -97,7 +89,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             onFocus={(e) => e.target.type = 'datetime-local'}
             // onBlur={(e) => e.target.type = 'text'}
             className={styles.startTime}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => setStartTime(e.target.value)}
           />
           <input
             type="text"
@@ -106,7 +98,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             onFocus={(e) => e.target.type = 'datetime-local'}
             // onBlur={(e) => e.target.type = 'text'}
             className={styles.endTime}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => setEndTime(e.target.value)}
           />
         </div>
         <div className={styles.friendSelect}>
