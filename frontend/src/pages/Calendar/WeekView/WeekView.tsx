@@ -5,20 +5,16 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 import Days from './Days';
 import styles from './WeekView.module.css';
 
-const WeekView = () => {
-  const [startDay, setStartDay] = useState<Date>();
-  const [endDay, setEndDay] = useState<Date>();
+interface WeekViewProps {
+  startDay: Date | undefined;
+}
+
+const WeekView: React.FC<WeekViewProps> = ({startDay}) => {
+  const [currentTime, setCurrentTime] = useState<number>();
 
   useEffect(() => {
-    const today = new Date();
-    const day = today.getDay();
-    const diff = today.getDate() - day + (day == 0 ? -6 : 1);
-    const start = new Date(today.setDate(diff));
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(today.setDate(diff + 6));
-    end.setHours(23, 59, 59, 999);
-    setStartDay(start);
-    setEndDay(end);
+    const currentDay = new Date();
+    setCurrentTime(currentDay.getHours() * 60 * 60 + currentDay.getMinutes() * 60 + currentDay.getSeconds());
   }, []);
 
   const hourBoxes = [];
@@ -32,11 +28,22 @@ const WeekView = () => {
   }
 
   const hourLines = [];
-  for (let i = 0; i <= 25; i++){
+  for (let i = 1; i <= 25; i++){
     const hourLinePosition = `${i * 50}px`;
     hourLines.push(
       <div className={styles.hourLine}
         style={{top: hourLinePosition}}
+        key={i}
+      ></div>
+    )
+  }
+
+  const dayLines = [];
+  for (let i = 0; i <= 7; i++){
+    const dayLinePosition = `calc((10% - 0.727px) + (90% - 6.543px) * ${i} / 7)`;
+    dayLines.push(
+      <div className={styles.dayLine}
+        style={{left: dayLinePosition}}
         key={i}
       ></div>
     )
@@ -49,7 +56,7 @@ const WeekView = () => {
 
     const start = new Date(startDay);
     start.setDate(startDay.getDate() + i);
-    const formattedDate = start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const formattedDate = start.toLocaleDateString(undefined, { day: 'numeric' });
     dayAndDates.push(
       <div className={`${styles.header_element} ${styles.calendar_day}`} key={i}>
         <div>{days[i]} {formattedDate}</div>
@@ -57,26 +64,40 @@ const WeekView = () => {
     )
   }
 
+  const sameWeek = (date1: Date, date2: Date) => {
+    const startOfWeek = (date: Date) => {
+      date.setHours(0, 0, 0, 0);
+      const day = date.getDay();
+      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+      return new Date(date.setDate(diff));
+    };
+
+    const start1 = startOfWeek(new Date(date1));
+    const start2 = startOfWeek(new Date(date2));
+    return start1.getTime() === start2.getTime();
+  }
+
+  const isSameWeek = sameWeek(startDay!, new Date());
+
   return (
     <div className={styles.calendar_container}>
+      {isSameWeek &&
+        <>
+          <div className={styles.calendar_nowLine}></div>
+          <div className={`${styles.dot} ${styles.leftDot}`}></div>
+          <div className={`${styles.dot} ${styles.rightDot}`}></div>
+        </>
+      }
       <div className={styles.calendar_header}>
+        {dayLines}
         <div className={`${styles.header_element} ${styles.calendar_clock}`}><FontAwesomeIcon icon={faClock}/></div>
         {dayAndDates}
       </div>
       <div className={styles.calendar_main}>
         {hourLines}
         <div className={styles.calendar_sideTime}>{hourBoxes}</div>
-        <Days startDay={startDay} endDay={endDay}/>
+        <Days startDay={startDay}/>
       </div>
-      {/* <div className={styles.calendar_main}>
-        <Day name="Monday"/>
-        <Day name="Tuesday"/>
-        <Day name="Wednesday"/>
-        <Day name="Thursday"/>
-        <Day name="Friday"/>
-        <Day name="Saturday"/>
-        <Day name="Sunday"/>
-      </div> */}
     </div>
   );
 }
