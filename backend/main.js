@@ -1,12 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const router = require('./routes/calendar');
 const connectDB = require('./database/connection');
+
+const calendarRouter = require('./routes/calendar');
+// const authRouter = require('./routes/user');
 
 const app = express();
 app.use(cors());
 
-app.use('/api/calendar', router);
+app.use('/api/calendar', calendarRouter);
+// app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => {
     res.send('Schedura API');

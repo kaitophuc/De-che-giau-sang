@@ -3,12 +3,19 @@ import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './AddEvent.module.css';
 
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
+  top?: number;
+  left?: number;
+  right?: number;
+  bottom?: number;
+  title?: string
+  
 }
 
 Modal.setAppElement('#root');
@@ -17,6 +24,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState<string>('');
   const [place, setPlace] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [startDay, setStartDay] = useState<string>('');
   const [startTime, setStartTime] = useState<string>('');
   const [endTime, setEndTime] = useState<string>('');
   const [selectedFriend, setSelectedFriend] = useState<string>('');
@@ -24,13 +32,16 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
   const handleSave = async (e: any) => {
     e.preventDefault();
 
+    const startDateTime = new Date(`${startDay}T${startTime}`);
+    const endDateTime = new Date(`${startDay}T${endTime}`);
+
     // Create URL with query parameters
     const url = new URL('http://localhost:5050/api/calendar/event');
     const params = new URLSearchParams({
       title: title,
       place: place,
-      startTime: new Date(startTime).toISOString(),
-      endTime: new Date(endTime).toISOString(),
+      startTime: startDateTime.toISOString(),
+      endTime: endDateTime.toISOString(),
       description: description
     });
     url.search = params.toString();
@@ -64,7 +75,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
     >
       <div className={styles.form}>
         <div className={styles.header}>
-        <input
+          <input
             type="text"
             id="title"
             placeholder="Event Title"
@@ -84,31 +95,37 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
         <div className={styles.date}>
           <input
             type="text"
-            id="startDate"
+            id="startDay"
             placeholder="Start Date"
-            onFocus={(e) => e.target.type = 'datetime-local'}
-            // onBlur={(e) => e.target.type = 'text'}
-            className={styles.startTime}
+            onFocus={(e) => e.target.type = 'date'}
+            className={styles.borderRight}
+            onChange={(e) => setStartDay(e.target.value)}
+          />
+          <input
+            type="text"
+            id="startTime"
+            placeholder="From"
+            onFocus={(e) => e.target.type = 'time'}
+            className={styles.borderRight}
             onChange={(e) => setStartTime(e.target.value)}
           />
           <input
             type="text"
-            id="endDate"
-            placeholder="End Date"
-            onFocus={(e) => e.target.type = 'datetime-local'}
-            // onBlur={(e) => e.target.type = 'text'}
-            className={styles.endTime}
+            id="endTime"
+            placeholder="To"
+            onFocus={(e) => e.target.type = 'time'}
             onChange={(e) => setEndTime(e.target.value)}
           />
         </div>
         <div className={styles.friendSelect}>
           <select
-            id = "friendSelect"
+            id="friendSelect"
             value={selectedFriend}
             onChange={(e) => setSelectedFriend(e.target.value)}
             className={styles.friendDropdown}
           >
             <option value="" disabled>Select a friend</option>
+            <option value="khanh">Khanh</option>
           </select>
         </div>
         <div className={styles.description}>
