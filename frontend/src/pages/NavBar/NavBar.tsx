@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 function NavBar() {
+  useEffect(() => {
+    
+  })
+
   return (
     <nav className={styles.navbar_background}>
       <ul className={styles.navbar_content}>

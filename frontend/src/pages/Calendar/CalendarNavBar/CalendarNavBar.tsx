@@ -8,41 +8,27 @@ import {
 import styles from './CalendarNavBar.module.css';
 import AddEvent from '../Event/AddEvent/AddEvent.tsx';
 
-const CalendarNavBar = () => {
-  const [currentDate, setCurrentDate] = useState('');
-  const [view, setView] = useState('Week');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface CalendarNavBarProps {
+  view: string;
+  startDay: Date | undefined;
+  changeView: (view: string) => void;
+  changeDate: (isBackward: boolean) => void;
+  newEvent: () => void;
+}
+
+const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeView, changeDate, newEvent}) => {
+  const [endDay, setEndDay] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
-    const date = new Date();
-    const formattedDate = date.toLocaleDateString();
-    setCurrentDate(formattedDate);
-  }, [])
+    if (!startDay) return;
+    const end = new Date(startDay);
+    end.setDate(end.getDate() + 6);
+    setEndDay(end);
+  }, [startDay]);
 
-  const changeDate = (isBackward: boolean) => {
-    const date = new Date(currentDate)
-    if (view == 'Day') {
-      date.setDate(date.getDate() + (isBackward ? -1 : 1));
-      const formattedDate = date.toLocaleDateString();
-      setCurrentDate(formattedDate);
-    } else if (view == 'Week') {
-      date.setDate(date.getDate() + (isBackward ? -7 : 7));
-      const formattedDate = date.toLocaleDateString();
-      setCurrentDate(formattedDate);
-    } else if (view == 'Month') {
-      date.setMonth(date.getMonth() + (isBackward ? -1 : 1));
-      const formattedDate = date.toLocaleDateString();
-      setCurrentDate(formattedDate);
-    }
-  }
-
-  const changeView = (view: string) => {
-    setView(view);
-  }
-
-  const newEvent = () => {
-    console.log('New event');
-    setIsModalOpen(true);
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return '';
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
   return (
@@ -54,7 +40,7 @@ const CalendarNavBar = () => {
         <button className={styles.navigator} onClick={() => changeDate(true)}>
           <FontAwesomeIcon icon={faCircleChevronLeft} style={{ fontSize: '20px', color: '#C3CAD9' }}/>
         </button>
-        <p className={styles.date}>{currentDate}</p>
+        <p className={styles.date}>{formatDate(startDay)} - {formatDate(endDay)}</p>
         <button className={styles.navigator} onClick={() => changeDate(false)}>
           <FontAwesomeIcon icon={faCircleChevronRight} style={{ fontSize: '20px', color: '#C3CAD9' }}/>
         </button>
@@ -64,10 +50,6 @@ const CalendarNavBar = () => {
         <button className={`${styles.viewButton} ${view == 'Week' ? styles.active : ''}`} onClick={() => changeView('Week')}>Week</button>
         <button className={`${styles.viewButton} ${view == 'Month' ? styles.active : ''}`} onClick={() => changeView('Month')}>Month</button>
       </div>
-      <AddEvent 
-        isOpen={isModalOpen}
-        onClose= {() => setIsModalOpen(false)}
-      />
     </div>
   )
 }
