@@ -51,7 +51,7 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
   return (
     <div className={styles.calendar_week}>
       {events.map((event) => {
-        const dateInt = event.startTime.getDay() - 1;
+        const dateInt = event.startTime.getDay() == 0 ? 6 : event.startTime.getDay() - 1;
         const startHour = event.startTime.getHours();
         const startMinute = event.startTime.getMinutes();
         const endHour = event.endTime.getHours();

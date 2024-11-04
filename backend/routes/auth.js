@@ -1,7 +1,12 @@
-const { signUp, login, logout, update } = require('../controllers/user/auth');
-const authRouter = require('express').Router();
+const { register, login, logout, update } = require('../controllers/user/auth');
+const express = require('express');
 
-authRouter.post('/signup', signUp);
+const authRouter = express.Router();
+
+authRouter.use(express.json());
+authRouter.use(express.urlencoded({ extended: true }));
+
+authRouter.post('/register', register);
 authRouter.post('/login', login);
 authRouter.post('/logout', logout);
 authRouter.post('/update', update);
