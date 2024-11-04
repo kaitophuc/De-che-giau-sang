@@ -9,7 +9,7 @@ interface WeekViewProps {
   startDay: Date | undefined;
 }
 
-const WeekView: React.FC<WeekViewProps> = ({startDay}) => {
+const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
   const [currentTime, setCurrentTime] = useState<number>();
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const WeekView: React.FC<WeekViewProps> = ({startDay}) => {
       <div className={styles.calendar_main}>
         {hourLines}
         <div className={styles.calendar_sideTime}>{hourBoxes}</div>
-        <Days startDay={startDay}/>
+        <Days startDay={startDay} viewEvent={viewEvent}/>
       </div>
     </div>
   );

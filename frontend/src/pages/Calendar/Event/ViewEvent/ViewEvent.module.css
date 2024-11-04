@@ -1,0 +1,105 @@
+/* Modal */
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modalContent {
+    background-color: white;
+    margin: 100px auto;
+    width: 35%;
+    height: 30%;
+    border-radius: 5px;
+  }
+  
+  /* Form, its immediate children, and input fields */
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .header input, .place input, .description input, .friendSelect select {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .date input {
+    height: 100%;
+    width: calc(100% / 3);
+  }
+  
+  .form input, select {
+    border-bottom: 2px solid var(--main-background-color);
+    padding-left: 10px;
+  }
+  
+  .form input:focus, select:focus {
+    border-bottom: 2px solid var(--main-background-color);
+    outline: none;
+  }
+  
+  .header, .place, .date, .description, .friendSelect, .button {
+    height: calc(100% / 6);
+    width: 100%;
+  }
+  
+  .date {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  input::placeholder {
+    color: var(--main-background-color);
+  }
+  
+  /* Header */
+  
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+  }
+  
+  .eventTitle {
+    border: none;
+    margin: none;
+    width: 75%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  /* button */
+  
+  .button {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* border: 1px solid var(--main-background-color); */
+  }
+  
+  .closeButton {
+    width: 100%;
+    border-right: 1px solid var(--main-background-color);
+  }
+  
+  .submitButton {
+    width: 100%;
+    border-left: 1px solid var(--main-background-color);
+    /* margin: auto; */
+  }
+  
+  /* Miscellaneous */
+  
+  .borderRight {
+    border-right: 2px solid var(--main-background-color);
+  }
+  
