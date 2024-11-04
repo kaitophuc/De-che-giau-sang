@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
+import { useLocalStorage } from '../../../Auth/hooks/useLocalStorage';
 import styles from './AddEvent.module.css';
 
 interface EventModalProps {
@@ -29,6 +30,8 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
   const [endTime, setEndTime] = useState<string>('');
   const [selectedFriend, setSelectedFriend] = useState<string>('');
 
+  const localStorage = useLocalStorage();
+
   const handleSave = async (e: any) => {
     e.preventDefault();
 
@@ -36,7 +39,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
     const endDateTime = new Date(`${startDay}T${endTime}`);
 
     // Create URL with query parameters
-    const url = new URL('http://localhost:5050/api/calendar/event');
+    const url = new URL('http://localhost:5050/api/calendarevent');
     const params = new URLSearchParams({
       title: title,
       place: place,
@@ -51,6 +54,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `${localStorage.getItem('user')}`,
         },
       });
 

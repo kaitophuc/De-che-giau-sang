@@ -3,9 +3,9 @@ import { AuthContext } from '../context/AuthContext';
 import { useLocalStorage } from './useLocalStorage';
 
 export interface User {
-  id: string;
-  email: string;
-  username: string;
+  email?: string;
+  username?: string;
+  password?: string;
   authToken?: string;
 }
 
@@ -13,9 +13,9 @@ export const useUser = () => {
   const { user, setUser } = useContext(AuthContext);
   const { setItem } = useLocalStorage();
 
-  const addUser = (user: User) => {
-    setUser(user);
-    setItem('user', JSON.stringify(user));
+  const addUser = async (new_user: User) =>{
+    setUser(new_user);
+    setItem('user', JSON.stringify(new_user));
   };
 
   const removeUser = () => {
