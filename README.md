@@ -14,6 +14,7 @@ npm install
 ```
 
 Then, in one terminal, from the root directory of the project, start the backend server:
+
 For Window:
 
 ```
