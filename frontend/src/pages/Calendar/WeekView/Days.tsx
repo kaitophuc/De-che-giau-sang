@@ -15,7 +15,7 @@ type Event = {
   // color: string;
 }
 
-const Days: React.FC<DaysProps> = ({startDay}) => {
+const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
   const [events, setEvents] = useState<Array<Event>>([]);
 
   useEffect(() => {
@@ -42,6 +42,11 @@ const Days: React.FC<DaysProps> = ({startDay}) => {
       });
     }
   }, [startDay]);
+
+  const handleEventClick = (event: Event) => {
+    console.log('You clicked on event:', event);
+    viewEvent(event);
+  }
 
   return (
     <div className={styles.calendar_week}>
@@ -71,7 +76,7 @@ const Days: React.FC<DaysProps> = ({startDay}) => {
               left: left,
               right: right,
             }}
-
+            onClick={() => handleEventClick(event)}
           >
             <p>{event.title}</p>
             {/* <p>{new Date(event.startTime).toDateString()}</p>
