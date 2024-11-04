@@ -1,18 +1,27 @@
 import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import { useAuth } from './hooks/useAuth';
 
 const Login = () => {
-    const [username, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth(); 
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = login({
-            username,
-            password
+
+        const response = await login({
+            username: username,
+            password: password,
         });
+        
+        if (response.success) {
+            console.log('Logged in!');
+            navigate("/");
+        }
+
         console.log(response);
     }
 
@@ -23,9 +32,9 @@ const Login = () => {
             <form className={styles.form} onSubmit={handleLogin}>
                 <input
                     type="text"
-                    placeholder="Username Or Email"
+                    placeholder="Username"
                     value={username}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <input
                     type="password"
@@ -35,6 +44,9 @@ const Login = () => {
                 />
                 <button type="submit">Login</button>
             </form>
+            <div>
+                Don't have an account? <Link to="/register">Register</Link>
+            </div>
           </div>
         </div>
     );
