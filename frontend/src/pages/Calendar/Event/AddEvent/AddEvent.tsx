@@ -39,7 +39,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
     const endDateTime = new Date(`${startDay}T${endTime}`);
 
     // Create URL with query parameters
-    const url = new URL('http://localhost:5050/api/calendarevent');
+    const url = new URL('http://localhost:5050/api/calendar/event');
     const params = new URLSearchParams({
       title: title,
       place: place,
