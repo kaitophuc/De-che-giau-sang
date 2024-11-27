@@ -15,7 +15,18 @@ const UserSchema = new moongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+  },
+  googleId: {
+    type: String,
+  },
+  googleAccessToken: {
+    type: String,
+  },
+  microsoftId: {
+    type: String,
+  },
+  microsoftAccessToken: {
+    type: String,
   },
   friends: {
     type: [String],

@@ -2,9 +2,9 @@
   "name": "de-che-giau-sang",
   "version": "1.0.0",
   "description": "Kỳ lân vào năm 2030",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --require dotenv/config main.js"
   },
   "type": "commonjs",
   "keywords": [],
@@ -14,8 +14,16 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1"
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.7",
+    "ollama": "^0.5.10",
+    "openai": "^4.73.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0"
   }
 }

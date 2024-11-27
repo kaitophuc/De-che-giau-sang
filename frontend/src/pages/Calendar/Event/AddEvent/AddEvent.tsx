@@ -39,7 +39,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
     const endDateTime = new Date(`${startDay}T${endTime}`);
 
     // Create URL with query parameters
-    const url = new URL('http://localhost:5050/api/calendarevent');
+    const url = new URL('http://localhost:5173/api/calendar/event');
     const params = new URLSearchParams({
       title: title,
       place: place,
@@ -50,16 +50,21 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
     url.search = params.toString();
 
     try {
+      console.log(localStorage.getItem('user'));
+
       const response = await fetch(url.toString(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `${localStorage.getItem('user')}`,
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`); // Error handling
+        await response.json().then((errorData) => {
+          throw new Error(`${response.status} ${errorData.message}`);
+        })
       }
 
       const responseData = await response.json();

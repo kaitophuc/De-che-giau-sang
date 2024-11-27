@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './Days.module.css';
+import { useLocalStorage } from '../../Auth/hooks/useLocalStorage';
 
 type DaysProps = {
   startDay: Date | undefined;
@@ -17,6 +18,7 @@ type Event = {
 
 const Days: React.FC<DaysProps> = ({startDay}) => {
   const [events, setEvents] = useState<Array<Event>>([]);
+  const { getItem } = useLocalStorage();
 
   useEffect(() => {
     if (startDay) {
@@ -26,9 +28,22 @@ const Days: React.FC<DaysProps> = ({startDay}) => {
       endDay.setSeconds(startDay.getSeconds() - 1);
       const endDayString = endDay.toISOString();
 
-      fetch(`/api/calendar/event?startTime=${startDayString}&endTime=${endDayString}`).then((response) => {
+      const user = getItem('user');
+      const authToken = user ? JSON.parse(user).authToken : null;
+
+      fetch(`/api/calendar/event?startTime=${startDayString}&endTime=${endDayString}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          }
+        }
+      ).then((response) => {
         if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
+          return response.json().then((errorData) => {
+            throw new Error(`${response.status} ${errorData.message}`);
+          });
         }
         return response.json();
       }).then((data) => {
@@ -57,10 +72,7 @@ const Days: React.FC<DaysProps> = ({startDay}) => {
         const bottom = 1330 - (endHour + endMinute / 60) * 50;
         const left = `calc(100% * ${dateInt} / 7 + 4px)`;
         const right = `calc(100% - (100% * (${dateInt + 1}) / 7 - 1px))`;
-        // const left = `calc(100% * ${dateInt} / 7 + 7px + ${dateInt * (dateInt) / (dateInt + 1)}px)`;
-        // const right = `calc(100% - (100% * (${dateInt + 1}) / 7 + ${(dateInt + 1) * (dateInt + 2) / (dateInt + 1) - 3}px))`;
-        // console.log(top, bottom, left, right);
-
+  
         return (
           <div
             key={event._id}
