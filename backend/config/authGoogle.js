@@ -17,7 +17,6 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
     }
 
     const currentUser = await User.findById(request.query.state);
-    console.log(currentUser);
     if (currentUser) {
       currentUser.googleId = profile.id;
       currentUser.googleAccessToken = accessToken;

@@ -32,7 +32,7 @@ const App: React.FC = () => {
   return (
     <AuthContext.Provider value={useMemo(() => ({ user, setUser, loading, setLoading }), [user, setUser, loading, setLoading])}>
       {router}
-    </>
+    </AuthContext.Provider>
   );
 };
 

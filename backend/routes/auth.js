@@ -92,7 +92,7 @@ authRouter.get(
   passport.authenticate('google', {failureRedirect: 'http://localhost:5173/login', successRedirect: 'http://localhost:5173/', session: false}),
   (req, res) => {
     try {
-      if (!req.user || !req.user.googleAccessToken) {
+      if (!req.user) {
         return res.status(400).send('Authentication failed');
       }
     } catch (error) {
