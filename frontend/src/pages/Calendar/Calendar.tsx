@@ -6,12 +6,17 @@ import WeekView from './WeekView/WeekView';
 import NavBar from '../NavBar/NavBar';
 import SideBar from '../SideBar/SideBar';
 import AddEvent from './Event/AddEvent/AddEvent';
+import ViewEvent from './Event/ViewEvent/ViewEvent';
 
 const Calendar = () => {
   const [sideBar, setSideBar] = useState(false);
   const [startDay, setStartDay] = useState<Date> ();
   const [view, setView] = useState('Week');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // checks if the view event modal is open
+  const [isViewEventOpen, setIsViewEventOpen] = useState(false);
+  const [openedEvent, setOpenedEvent] = useState(null);
 
   useEffect(() => {
     const today = new Date();
@@ -53,6 +58,12 @@ const Calendar = () => {
     setIsModalOpen(true);
   }
 
+  const viewEvent = (event) => {
+    console.log('Viewing event: ', event);
+    setOpenedEvent(event);
+    setIsViewEventOpen(true);
+  }
+
   return (
     <div className={styles.screen}>
       <SideBar showSideBar={showSideBar} sideBar={sideBar}/>
@@ -61,13 +72,21 @@ const Calendar = () => {
         <div className={styles.main}>
           <div className={styles.calendar}>
             <CalendarNavBar view={view} startDay={startDay} changeView={changeView} changeDate={changeDate} newEvent={newEvent}/>
-            <WeekView startDay={startDay}/>
+            <WeekView startDay={startDay} viewEvent={viewEvent}/>
           </div>
         </div>
       </div>
       <AddEvent 
         isOpen={isModalOpen}
         onClose= {() => setIsModalOpen(false)}
+      />
+      <ViewEvent
+        event={openedEvent}
+        isOpen={isViewEventOpen}
+        onClose= {() => {
+          setIsViewEventOpen(false);
+          setOpenedEvent(null);
+        }}
       />
     </div>
   )

@@ -9,13 +9,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
-
-    useEffect(() => {
-        if (user) {
-            navigate('/');
-        }
-    }, [user])
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,27 +28,37 @@ const Login = () => {
 
     return (
         <div className={styles.screen}>
-          <div className={styles.container}>
-            <h1>Login</h1>
-            <form className={styles.form} onSubmit={handleLogin}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Login</button>
-            </form>
-            <div>
-                Don't have an account? <Link to="/register">Register</Link>
+
+            <div className={styles.login_left}>
+                <div className={styles.textContainer}>
+                    <h1>Calendar</h1>
+                    <p>Manage your life with our productivity app</p>
+                </div>
             </div>
-          </div>
+
+            <div className={styles.login_right}> 
+                <div className={styles.loginContainer}>
+                    <h1>Welcome Back!</h1>
+                    <form className={styles.form} onSubmit={handleLogin}>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <button className={styles.loginButton} type="submit">Login</button>
+                    </form>
+                    <div>
+                        Don't have an account? <Link to="/register">Register</Link>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
