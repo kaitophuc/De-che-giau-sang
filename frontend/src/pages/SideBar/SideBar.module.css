@@ -1,0 +1,41 @@
+/* margin: top | right | bottom | left */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  width: 100%;
+}
+
+.sidebar_expanded {
+  width: 170px;
+}
+
+.sidebar_collapsed {
+  width: 75px;
+}
+
+.top {
+  margin: 20px 20px 20px 20px;
+}
+
+.page {
+  margin: 20px 20px 20px 20px;
+}
+
+.flex_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.page_name {
+  padding: 5px 0 0 0;
+}
+
+.icon_color {
+  color: rgb(195, 202, 217);
+}
+
+.icon_margin {
+  margin: 0 7px -1px 10px;
+}
