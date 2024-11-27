@@ -1,10 +1,13 @@
-// const { login, logout, signUp, update } = require('../controllers/user/auth');
+const express = require('express');
+const passport = require('passport');
 
-// const authRouter = require('express').Router();
+const userRouter = express.Router();
 
-// authRouter.post('/signup', signUp);
-// authRouter.post('/login', login);
-// authRouter.post('/logout', logout);
-// authRouter.post('/update', update);
+userRouter.get('/', (req, res, next) => {
+  res.status(200).json({
+    username: req.user.username,
+    email: req.user.email,
+  })
+})
 
-// module.exports = authRouter;
+module.exports = userRouter;

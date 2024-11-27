@@ -58,6 +58,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {

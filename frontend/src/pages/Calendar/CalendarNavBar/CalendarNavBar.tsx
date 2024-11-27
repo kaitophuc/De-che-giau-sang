@@ -6,7 +6,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './CalendarNavBar.module.css';
-import AddEvent from '../Event/AddEvent/AddEvent.tsx';
 
 interface CalendarNavBarProps {
   view: string;
@@ -18,6 +17,7 @@ interface CalendarNavBarProps {
 
 const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeView, changeDate, newEvent}) => {
   const [endDay, setEndDay] = useState<Date | undefined>(undefined);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   useEffect(() => {
     if (!startDay) return;
@@ -31,10 +31,70 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
     return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  }
+
+  const syncGoogle = async () => {
+    console.log('Syncing with Google Calendar...');
+    // fetch('http://localhost:5050/api/auth/sync', {
+    // fetch('http://localhost:5050/api/auth/google', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+    //   },
+    //   credentials: 'include',
+    // }).then(response => {
+    //   console.log(response);
+    //   if (response.ok) {
+    //     console.log('Successfully synced with Google Calendar');
+    //   } else {
+    //     console.log('Failed to sync with Google Calendar');
+    //   }
+    // })
+    // await fetch('http://localhost:5050/api/auth/sync/google', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+    //   },
+    //   credentials: 'include',
+    // })
+    const response = await fetch('http://localhost:5050/api/auth/verify-token', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+      },
+      credentials: 'include',
+    })
+    const data = await response.json();
+    if (data.success) {
+      console.log(data.user);
+      window.location.href = `http://localhost:5050/api/auth/google/sync/${data.user._id}`;
+      console.log('Successfully synced with Google Calendar');
+    } else {
+      console.log('Failed to sync with Google Calendar');
+    }
+    // window.location.href = 'http://localhost:5050/api/auth/google';
+  }
+
   return (
     <div className={styles.calendar_navbar}>
       <div className={styles.left}>
-        <button className={`${styles.addButton}`} onClick={newEvent}>New event</button>
+        <button className={`${styles.leftButton}`} onClick={newEvent}>New event</button>
+        <div className={styles.syncButtonContainer}>
+          <button className={`${styles.leftButton} ${showDropdown ? styles.syncButtonActive : styles.syncButtonInactive}`} onClick={toggleDropdown}>Sync</button>
+          {showDropdown && (
+            <div className={styles.dropdown}>
+              <ul>
+                <li><button onClick={syncGoogle}>Sync with Google Calendar</button></li>
+                <li>Sync with Outlook</li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
       <div className={styles.center}>
         <button className={styles.navigator} onClick={() => changeDate(true)}>

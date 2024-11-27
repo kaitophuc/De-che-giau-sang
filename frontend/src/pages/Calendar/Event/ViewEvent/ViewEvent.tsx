@@ -7,7 +7,8 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './ViewEvent.module.css';
 
-interface EventModalProps {
+interface ViewEventModalProps {
+  event: any;
   isOpen: boolean;
   onClose: () => void;
   top?: number;
@@ -15,12 +16,11 @@ interface EventModalProps {
   right?: number;
   bottom?: number;
   title?: string
-  
 }
 
 Modal.setAppElement('#root');
 
-const ViewEvent: React.FC<EventModalProps> = ({ event, isOpen, onClose }) => {
+const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) => {
   if (event === null){
     return null;
   }
