@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 import LoginComponent from './LoginComponent';
 import RegisterComponent from './RegisterComponent';
+import { AuthContext } from './context/AuthContext';
 
 const Login = () => {
 
     const [viewLogin, setViewLogin] = useState(true);
     const [viewRegister, setViewRegister] = useState(false);
+    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (user) {
+            navigate("/");
+        }
+    }, [user]);
 
     const viewRegisterComponent = () => {
         setViewLogin(false);
