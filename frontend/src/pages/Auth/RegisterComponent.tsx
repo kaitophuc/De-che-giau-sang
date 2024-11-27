@@ -1,14 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom';
+import styles from './Login.module.css';
 import { useState } from 'react';
 import { useAuth } from './hooks/useAuth';
-import styles from './Login.module.css';
 
-const Register = () => {
+const RegisterComponent = ({isOpen, viewLogin}) => {
+    if (isOpen === false){
+        return null;
+    }
+
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { register } = useAuth();
-    const navigate = useNavigate();
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,13 +23,13 @@ const Register = () => {
 
         if (response.success) {
             console.log('Registered!');
-            navigate("/login");
+            viewLogin();
         }
     }
 
+
     return (
-        <div className={styles.screen}>
-          <div className={styles.container}>
+        <div className={styles.loginContainer}>
             <h1>Register</h1>
             <form className={styles.form} onSubmit={handleRegister}>
                 <input
@@ -48,14 +50,13 @@ const Register = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type="submit">Register</button>
+                <button className={styles.loginButton} type="submit">Register</button>
             </form>
             <div>
-                Already have an account? <Link to="/login">Login</Link>
+                <p onClick={viewLogin}>Already have an account? Log in</p>
             </div>
-          </div>
         </div>
     );
-};
+}
 
-export default Register;
+export default RegisterComponent;
