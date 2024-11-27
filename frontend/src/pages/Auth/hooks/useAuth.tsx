@@ -1,19 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useUser, User } from './useUser';
 import { useLocalStorage } from './useLocalStorage';
+import { AuthContext } from '../context/AuthContext';
 
 export const useAuth = () => {
   const { user, setUser, addUser, removeUser } = useUser();
   const { getItem } = useLocalStorage();
+  const { setLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    const savedUser = getItem('user');
-    console.log('Saved user:', savedUser);
-    console.log('User:', user);
-    if (savedUser && savedUser !== JSON.stringify(user)) {
-      console.log('Actually update');
-      addUser(JSON.parse(savedUser));
+    const verifyUser = async () => {
+      const savedUser = getItem('user');
+      if (savedUser && savedUser !== JSON.stringify(user)) {
+
+        await fetch('/api/auth/verify-token', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JSON.parse(savedUser).authToken}`,
+            'Access-Control-Allow-Origin': "*",
+          }
+        }).then((response) => {
+          return response.json();
+        }).then((data) => {
+          if (data.success === true) {
+            addUser(JSON.parse(savedUser));
+          } else {
+            removeUser();
+          }
+        }).catch(error => console.error('Error: ', error))
+      }
     }
+
+    verifyUser();
+    setLoading(false);
   }, [addUser]);
 
   const login = async (user: User): Promise<{ success: boolean }> => {
