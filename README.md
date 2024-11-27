@@ -15,9 +15,17 @@ npm install
 
 Then, in one terminal, from the root directory of the project, start the backend server:
 
+For Window:
+
 ```
 cd backend
 node --env-file=config.env main
+```
+
+For Linux:
+```
+cd backend
+dotenv -e config.env node main.js
 ```
 
 Open another terminal, and start the frontend:
