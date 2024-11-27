@@ -22,10 +22,6 @@ const App: React.FC = () => {
     {
       path: '/login',
       element: <Login />,
-    },
-    {
-      path: '/register',
-      element: <Register />,
     }
   ])
 
