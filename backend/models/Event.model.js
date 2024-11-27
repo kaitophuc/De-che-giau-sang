@@ -6,6 +6,7 @@ const EventSchema = new mongoose.Schema({
   startTime: Date,
   endTime: Date,
   description: String,
+  userId: String,
 });
 
 const Event = mongoose.model('Calendar', EventSchema);

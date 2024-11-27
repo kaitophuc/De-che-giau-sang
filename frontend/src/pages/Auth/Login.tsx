@@ -1,29 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
-import { useAuth } from './hooks/useAuth';
+import LoginComponent from './LoginComponent';
+import RegisterComponent from './RegisterComponent';
+import { AuthContext } from './context/AuthContext';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const { login } = useAuth();
+
+    const [viewLogin, setViewLogin] = useState(true);
+    const [viewRegister, setViewRegister] = useState(false);
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const response = await login({
-            username: username,
-            password: password,
-        });
-        
-        if (response.success) {
-            console.log('Logged in!');
+    useEffect(() => {
+        if (user) {
             navigate("/");
         }
+    }, [user]);
 
-        console.log(response);
-    }
+    const viewRegisterComponent = () => {
+        setViewLogin(false);
+        setViewRegister(true);
+    };
+
+    const viewLoginComponent = () => {
+        setViewLogin(true);
+        setViewRegister(false);
+    };
 
     return (
         <div className={styles.screen}>
@@ -36,27 +39,8 @@ const Login = () => {
             </div>
 
             <div className={styles.login_right}> 
-                <div className={styles.loginContainer}>
-                    <h1>Welcome Back!</h1>
-                    <form className={styles.form} onSubmit={handleLogin}>
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <button className={styles.loginButton} type="submit">Login</button>
-                    </form>
-                    <div>
-                        Don't have an account? <Link to="/register">Register</Link>
-                    </div>
-                </div>
+                <LoginComponent isOpen={viewLogin} viewRegister={viewRegisterComponent}/>
+                <RegisterComponent isOpen={viewRegister} viewLogin={viewLoginComponent}/>
             </div>
         </div>
     );

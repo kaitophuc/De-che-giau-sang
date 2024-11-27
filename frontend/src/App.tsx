@@ -11,6 +11,7 @@ import { useAuth } from './pages/Auth/hooks/useAuth.tsx';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   // const { user, login, logout, setUser } = useAuth();
 
   const router = useRoutes([
@@ -21,15 +22,11 @@ const App: React.FC = () => {
     {
       path: '/login',
       element: <Login />,
-    },
-    {
-      path: '/register',
-      element: <Register />,
     }
   ])
 
   return (
-    <AuthContext.Provider value={useMemo(() => ({ user, setUser }), [user, setUser])}>
+    <AuthContext.Provider value={useMemo(() => ({ user, setUser, loading, setLoading }), [user, setUser, loading, setLoading])}>
       {router}
     </AuthContext.Provider>
   );
