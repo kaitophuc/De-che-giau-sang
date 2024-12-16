@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
-import { useLocalStorage } from '../../../Auth/hooks/useLocalStorage';
+import { useLocalStorage } from '../../../../hooks/useLocalStorage';
 import styles from './AddEvent.module.css';
 
 interface EventModalProps {

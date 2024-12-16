@@ -1,7 +1,7 @@
 import styles from './Login.module.css';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 interface LoginComponentProps {
     isOpen: boolean;
