@@ -1,13 +1,14 @@
 import styles from './Login.module.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
-const LoginComponent = ({isOpen, viewRegister}) => {
-    if (isOpen === false){
-        return null;
-    }
-    
+interface LoginComponentProps {
+    isOpen: boolean;
+    viewRegister: () => void;
+}
+
+const LoginComponent: React.FC<LoginComponentProps> = ({isOpen, viewRegister}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
@@ -29,6 +30,11 @@ const LoginComponent = ({isOpen, viewRegister}) => {
         console.log(response);
     }
 
+    if (isOpen === false){
+        return null;
+    }
+    
+
     return (
         <div className={styles.loginContainer}>
             <h1>Welcome Back!</h1>
@@ -49,6 +55,7 @@ const LoginComponent = ({isOpen, viewRegister}) => {
             </form>
             <div>
                 <p onClick={viewRegister}>Don't have an account? Register</p>
+                {/* <Link></Link> */}
             </div>
         </div>
     );

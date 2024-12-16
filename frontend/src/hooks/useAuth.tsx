@@ -12,7 +12,6 @@ export const useAuth = () => {
     const verifyUser = async () => {
       const savedUser = getItem('user');
       if (savedUser && savedUser !== JSON.stringify(user)) {
-
         await fetch('/api/auth/verify-token', {
           method: 'GET',
           headers: {
@@ -28,7 +27,7 @@ export const useAuth = () => {
           } else {
             removeUser();
           }
-        }).catch(error => console.error('Error: ', error))
+        })
       }
     }
 
