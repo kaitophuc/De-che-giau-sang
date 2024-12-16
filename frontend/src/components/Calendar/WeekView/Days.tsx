@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './Days.module.css';
-import { useLocalStorage } from '../../Auth/hooks/useLocalStorage';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 type DaysProps = {
   startDay: Date | undefined;

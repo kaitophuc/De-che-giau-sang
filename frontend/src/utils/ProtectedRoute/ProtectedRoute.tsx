@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../pages/Auth/hooks/useAuth.tsx';
-import { AuthContext } from '../../pages/Auth/context/AuthContext.tsx';
+import { useAuth } from '../../hooks/useAuth.tsx';
+import { AuthContext } from '../../context/AuthContext.tsx';
 // import Loading from '../Loading/Loading.tsx';
 
 interface ProtectedRouteProps {
