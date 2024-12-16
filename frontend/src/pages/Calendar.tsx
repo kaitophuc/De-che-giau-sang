@@ -18,6 +18,16 @@ type Event = {
   // color: string;
 }
 
+type Event = {
+  _id: number;
+  title: string;
+  startTime: Date;
+  endTime: Date;
+  description: string;
+  place: string;
+  // color: string;
+}
+
 const Calendar = () => {
   const [sideBar, setSideBar] = useState(false);
   const [startDay, setStartDay] = useState<Date> ();
