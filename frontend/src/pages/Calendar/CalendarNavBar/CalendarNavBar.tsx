@@ -36,7 +36,6 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
   }
 
   const syncGoogle = async () => {
-    console.log('Syncing with Google Calendar...');
     // fetch('http://localhost:5050/api/auth/sync', {
     // fetch('http://localhost:5050/api/auth/google', {
     //   method: 'GET',
@@ -61,7 +60,55 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
     //   },
     //   credentials: 'include',
     // })
-    const response = await fetch('http://localhost:5050/api/auth/verify-token', {
+    // console.log(`Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`);
+    // const response = await fetch('/api/auth/verify-token', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+    //   },
+    //   credentials: 'include',
+    // })
+    // const data = await response.json();
+    // if (data.success) {
+    //   console.log(data.user);
+    //   window.location.href = `http://localhost:5050/api/auth/google/sync/${data.user._id}`;
+    //   console.log('Successfully synced with Google Calendar');
+    // } else {
+    //   console.log('Failed to sync with Google Calendar');
+    // }
+    // window.location.href = 'http://localhost:5050/api/auth/google';
+    // console.log("Verify Google token...")
+    // console.log(`Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`);
+    // const response = await fetch('/api/auth/verify-google', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+    //   },
+    //   credentials: 'include',
+    // })
+    // const data = await response.json();
+    // // if (data.success) {
+    // if (data.success) {
+    //   console.log(data);
+    //   console.log("Syncing with Google Calendar...");
+    //   // const response = await fetch('/api/calendar/sync-google', {
+    //   //   method: 'GET',
+    //   //   headers: {
+    //   //     'Content-Type': 'application/json',
+    //   //     'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+    //   //   },
+    //   //   credentials: 'include',
+    //   // })
+    //   // const data = await response.json();
+    //   // console.log(data);
+    //   // window.location.href = 'http://localhost:5050/api/calendar/sync-google';
+    // } else {
+    //   console.log('Failed to sync with Google Calendar');
+    // }
+    console.log(`Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`);
+    const response = await fetch('/api/auth/verify-token', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +124,6 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
     } else {
       console.log('Failed to sync with Google Calendar');
     }
-    // window.location.href = 'http://localhost:5050/api/auth/google';
   }
 
   return (

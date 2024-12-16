@@ -22,6 +22,9 @@ const UserSchema = new moongoose.Schema({
   googleAccessToken: {
     type: String,
   },
+  googleRefreshToken: {
+    type: String,
+  },
   microsoftId: {
     type: String,
   },
