@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
-
-import CalendarNavBar from './CalendarNavBar/CalendarNavBar';
 import styles from './Calendar.module.css';
-import WeekView from './WeekView/WeekView';
-import NavBar from '../NavBar/NavBar';
-import SideBar from '../SideBar/SideBar';
-import AddEvent from './Event/AddEvent/AddEvent';
-import ViewEvent from './Event/ViewEvent/ViewEvent';
+
+import CalendarNavBar from '../components/Calendar/CalendarNavBar/CalendarNavBar';
+import WeekView from '../components/Calendar/WeekView/WeekView';
+import NavBar from '../components/NavBar/NavBar';
+import SideBar from '../components/SideBar/SideBar';
+import AddEvent from '../components/Calendar/Event/AddEvent/AddEvent';
+import ViewEvent from '../components/Calendar/Event/ViewEvent/ViewEvent';
+
+type Event = {
+  _id: number;
+  title: string;
+  startTime: Date;
+  endTime: Date;
+  description: string;
+  place: string;
+  // color: string;
+}
 
 const Calendar = () => {
   const [sideBar, setSideBar] = useState(false);
@@ -16,7 +26,7 @@ const Calendar = () => {
 
   // checks if the view event modal is open
   const [isViewEventOpen, setIsViewEventOpen] = useState(false);
-  const [openedEvent, setOpenedEvent] = useState(null);
+  const [openedEvent, setOpenedEvent] = useState<Event | null>(null);
 
   useEffect(() => {
     const today = new Date();
@@ -58,7 +68,7 @@ const Calendar = () => {
     setIsModalOpen(true);
   }
 
-  const viewEvent = (event) => {
+  const viewEvent = (event: Event) => {
     console.log('Viewing event: ', event);
     setOpenedEvent(event);
     setIsViewEventOpen(true);

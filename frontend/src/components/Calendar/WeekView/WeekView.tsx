@@ -5,8 +5,19 @@ import { faClock } from '@fortawesome/free-regular-svg-icons';
 import Days from './Days';
 import styles from './WeekView.module.css';
 
+type Event = {
+  _id: number;
+  title: string;
+  startTime: Date;
+  endTime: Date;
+  description: string;
+  place: string;
+  // color: string;
+}
+
 interface WeekViewProps {
   startDay: Date | undefined;
+  viewEvent: (event: Event) => void;
 }
 
 const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
