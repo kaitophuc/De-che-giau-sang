@@ -2,11 +2,12 @@ import styles from './Login.module.css';
 import { useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 
-const RegisterComponent = ({isOpen, viewLogin}) => {
-    if (isOpen === false){
-        return null;
-    }
+interface RegisterComponentProps {
+    isOpen: boolean;
+    viewLogin: () => void;
+}
 
+const RegisterComponent: React.FC<RegisterComponentProps> = ({isOpen, viewLogin}) => {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -25,6 +26,10 @@ const RegisterComponent = ({isOpen, viewLogin}) => {
             console.log('Registered!');
             viewLogin();
         }
+    }
+
+    if (isOpen === false){
+        return null;
     }
 
 
