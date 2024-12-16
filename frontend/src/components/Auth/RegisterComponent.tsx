@@ -1,6 +1,6 @@
 import styles from './Login.module.css';
 import { useState } from 'react';
-import { useAuth } from './hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 interface RegisterComponentProps {
     isOpen: boolean;

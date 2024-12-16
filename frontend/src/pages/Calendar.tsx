@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-
-import CalendarNavBar from './CalendarNavBar/CalendarNavBar';
 import styles from './Calendar.module.css';
-import WeekView from './WeekView/WeekView';
-import NavBar from '../NavBar/NavBar';
-import SideBar from '../SideBar/SideBar';
-import AddEvent from './Event/AddEvent/AddEvent';
-import ViewEvent from './Event/ViewEvent/ViewEvent';
+
+import CalendarNavBar from '../components/Calendar/CalendarNavBar/CalendarNavBar';
+import WeekView from '../components/Calendar/WeekView/WeekView';
+import NavBar from '../components/NavBar/NavBar';
+import SideBar from '../components/SideBar/SideBar';
+import AddEvent from '../components/Calendar/Event/AddEvent/AddEvent';
+import ViewEvent from '../components/Calendar/Event/ViewEvent/ViewEvent';
 
 type Event = {
   _id: number;
