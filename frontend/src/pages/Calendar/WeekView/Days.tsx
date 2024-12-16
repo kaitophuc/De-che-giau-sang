@@ -4,6 +4,7 @@ import { useLocalStorage } from '../../Auth/hooks/useLocalStorage';
 
 type DaysProps = {
   startDay: Date | undefined;
+  viewEvent: (event: Event) => void;
 }
 
 type Event = {
@@ -27,6 +28,9 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
       endDay.setDate(startDay.getDate() + 7);
       endDay.setSeconds(startDay.getSeconds() - 1);
       const endDayString = endDay.toISOString();
+
+      console.log(startDay);
+      console.log(endDay);
 
       const user = getItem('user');
       const authToken = user ? JSON.parse(user).authToken : null;
@@ -53,7 +57,7 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
           endTime: new Date(event.endTime),
         }));
         setEvents(processedData);
-        // console.log(events);
+        console.log(events);
       });
     }
   }, [startDay]);

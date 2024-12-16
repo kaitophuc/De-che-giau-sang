@@ -8,6 +8,16 @@ import SideBar from '../SideBar/SideBar';
 import AddEvent from './Event/AddEvent/AddEvent';
 import ViewEvent from './Event/ViewEvent/ViewEvent';
 
+type Event = {
+  _id: number;
+  title: string;
+  startTime: Date;
+  endTime: Date;
+  description: string;
+  place: string;
+  // color: string;
+}
+
 const Calendar = () => {
   const [sideBar, setSideBar] = useState(false);
   const [startDay, setStartDay] = useState<Date> ();
@@ -16,7 +26,7 @@ const Calendar = () => {
 
   // checks if the view event modal is open
   const [isViewEventOpen, setIsViewEventOpen] = useState(false);
-  const [openedEvent, setOpenedEvent] = useState(null);
+  const [openedEvent, setOpenedEvent] = useState<Event | null>(null);
 
   useEffect(() => {
     const today = new Date();
@@ -58,7 +68,7 @@ const Calendar = () => {
     setIsModalOpen(true);
   }
 
-  const viewEvent = (event) => {
+  const viewEvent = (event: Event) => {
     console.log('Viewing event: ', event);
     setOpenedEvent(event);
     setIsViewEventOpen(true);
