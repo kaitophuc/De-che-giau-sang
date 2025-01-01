@@ -8,34 +8,33 @@
 }
 
 .sidebar_expanded {
-  width: 170px;
+  width: 200px;
 }
 
 .sidebar_collapsed {
   width: 75px;
 }
 
-.top {
-  margin: 20px 20px 20px 20px;
+.page {
+  margin: 30px;
 }
 
-.page {
-  margin: 20px 20px 20px 20px;
+.top {
+  margin: 20px 30px 10px 30px;
 }
 
 .flex_row {
   display: flex;
   flex-direction: row;
+  margin-top: 30px;
 }
 
 .page_name {
   padding: 5px 0 0 0;
+  margin-left: 20px;
+  margin-top: -7px;
 }
 
 .icon_color {
   color: rgb(195, 202, 217);
-}
-
-.icon_margin {
-  margin: 0 7px -1px 10px;
 }

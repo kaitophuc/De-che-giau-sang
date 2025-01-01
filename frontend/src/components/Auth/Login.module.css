@@ -44,10 +44,6 @@
   margin-bottom: 15px;
 }
 
-a {
-  font-weight: bold;
-}
-
 .columns {
   display: flex;
   width: 100%;
