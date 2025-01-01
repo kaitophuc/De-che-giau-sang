@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 function NavBar() {
-  useEffect(() => {
+  const signOut = async () => {
     
-  })
+  }
 
   return (
     <nav className={styles.navbar_background}>
@@ -18,7 +18,10 @@ function NavBar() {
         </li>
       </ul>
       <div className={styles.page}>
-        <Link to="/profile:id">Profile</Link>
+        {/* <Link to="/profile:id">Profile</Link> */}
+        <button onClick={signOut}>
+          Sign out
+        </button>
       </div>
     </nav>
   );
