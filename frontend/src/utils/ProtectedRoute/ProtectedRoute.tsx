@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   // }
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/auth" />;
   }
 
   return element;

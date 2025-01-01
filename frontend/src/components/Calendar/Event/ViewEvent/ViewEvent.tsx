@@ -173,7 +173,7 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             onChange={(e) => setEndTime(e.target.value)}
           />
         </div>
-        <div className={styles.friendSelect}>
+        {/* <div className={styles.friendSelect}>
           <select
             id="friendSelect"
             value={selectedFriend}
@@ -183,7 +183,7 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             <option value="" disabled>Select a friend</option>
             <option value="khanh">Khanh</option>
           </select>
-        </div>
+        </div> */}
         <div className={styles.description}>
           <input
             type="text"

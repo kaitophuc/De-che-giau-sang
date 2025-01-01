@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from './Login.module.css';
+import styles from './Auth.module.css';
 import LoginComponent from '../components/Auth/LoginComponent';
 import RegisterComponent from '../components/Auth/RegisterComponent';
 import { AuthContext } from '../context/AuthContext';
