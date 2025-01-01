@@ -81,6 +81,9 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
         const bottom = 1330 - (endHour + endMinute / 60) * 50;
         const left = `calc(100% * ${dateInt} / 7 + 4px)`;
         const right = `calc(100% - (100% * (${dateInt + 1}) / 7 - 1px))`;
+
+        const startTimeString = new Date(event.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const endTimeString = new Date(event.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   
         return (
           <div
@@ -94,7 +97,11 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
             }}
             onClick={() => handleEventClick(event)}
           >
-            <p>{event.title}</p>
+            <p className={styles.eventTitle}>{event.title}</p>
+            <div className={styles.eventContainer}>
+              <div className={styles.eventTime}>{startTimeString}</div>
+              <div className={styles.eventTime}>{endTimeString}</div>
+            </div>
             {/* <p>{new Date(event.startTime).toDateString()}</p>
             <p>{new Date(event.endTime).toDateString()}</p>
             <p>{event.description}</p>

@@ -126,7 +126,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             onChange={(e) => setEndTime(e.target.value)}
           />
         </div>
-        <div className={styles.friendSelect}>
+        {/* <div className={styles.friendSelect}>
           <select
             id="friendSelect"
             value={selectedFriend}
@@ -136,7 +136,7 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
             <option value="" disabled>Select a friend</option>
             <option value="khanh">Khanh</option>
           </select>
-        </div>
+        </div> */}
         <div className={styles.description}>
           <input
             type="text"

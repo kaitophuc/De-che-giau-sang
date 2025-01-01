@@ -21,11 +21,13 @@ interface WeekViewProps {
 }
 
 const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
-  const [currentTime, setCurrentTime] = useState<number>();
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const currentDay = new Date();
-    setCurrentTime(currentDay.getHours() * 60 * 60 + currentDay.getMinutes() * 60 + currentDay.getSeconds());
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const hourBoxes = [];
@@ -88,23 +90,37 @@ const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
     return start1.getTime() === start2.getTime();
   }
 
-  const isSameWeek = sameWeek(startDay!, new Date());
-
+  const getCurrentTimePosition = (time: Date) => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    console.log(`${hours * 50 + minutes * 50 / 60}px`);
+    return hours * 50 + minutes * 50 / 60;
+  }
+ 
   return (
     <div className={styles.calendar_container}>
-      {isSameWeek &&
-        <>
-          <div className={styles.calendar_nowLine}></div>
-          <div className={`${styles.dot} ${styles.leftDot}`}></div>
-          <div className={`${styles.dot} ${styles.rightDot}`}></div>
-        </>
-      }
       <div className={styles.calendar_header}>
         {dayLines}
         <div className={`${styles.header_element} ${styles.calendar_clock}`}><FontAwesomeIcon icon={faClock}/></div>
         {dayAndDates}
       </div>
       <div className={styles.calendar_main}>
+        {startDay && sameWeek(startDay, new Date()) &&
+          <>
+            <div 
+              className={styles.calendar_nowLine}
+              style={{top: `${getCurrentTimePosition(currentTime)}px`}}
+            ></div>
+            <div
+              className={`${styles.dot} ${styles.leftDot}`}
+              style={{top: `${getCurrentTimePosition(currentTime) - 3.5}px`}}
+            ></div>
+            <div
+              className={`${styles.dot} ${styles.rightDot}`}
+              style={{top: `${getCurrentTimePosition(currentTime) - 3.5}px`}}
+            ></div>
+          </>
+        }
         {hourLines}
         <div className={styles.calendar_sideTime}>{hourBoxes}</div>
         <Days startDay={startDay} viewEvent={viewEvent}/>

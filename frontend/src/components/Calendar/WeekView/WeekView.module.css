@@ -57,6 +57,7 @@
   width: 100%;
   background-color: rgb(245, 246, 247);
   margin: 0;
+  z-index: 1;
 }
 
 .dayLine {
@@ -111,4 +112,35 @@
 
 .calendar_day {
   width: calc(90% / 7);
+}
+
+.calendar_nowLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 2px;
+  width: 100%;
+  background-color: rgb(255, 102, 51);
+  margin: 0;
+  z-index: 2;
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(255, 102, 51);
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.leftDot {
+  left: 0px;
+}
+
+.rightDot {
+  right: 0px;
 }
