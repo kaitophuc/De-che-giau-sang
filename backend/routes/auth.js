@@ -115,15 +115,31 @@ authRouter.get('/login/failed', (req, res) => {
   })
 })
 
-authRouter.get('/logout', (req, res, next) => {
+// authRouter.get('/logout', (req, res, next) => {
+//   req.logout((err) => {
+//     if (err) {
+//       return next(err);
+//     }
+
+//     req.session.destroy((err) => {
+//       res.clearCookie('connect.sid');
+//       res.json()
+//     })
+//   })
+// })
+
+authRouter.post('/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
-      return next(err);
+      return res.status(500).json({ success: false, message: 'Failed to logout'});
     }
 
     req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ success: false, message: 'Failed to destroy session'});
+      }
       res.clearCookie('connect.sid');
-      res.json()
+      return res.status(200).json({ success: true, message: 'Logged out successfully'});
     })
   })
 })

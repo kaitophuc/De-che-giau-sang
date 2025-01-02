@@ -1,10 +1,22 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
 function NavBar() {
-  const signOut = async () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const signOut = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await logout();
+    if (response.success) {
+      console.log('Logged out!');
+      navigate('/auth');
+    }
     
+    console.log(response);
   }
 
   return (

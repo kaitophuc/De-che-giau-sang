@@ -70,8 +70,19 @@ export const useAuth = () => {
     throw new Error('Register failed');
   }
 
-  const logout = () => {
-    removeUser();
+  const logout = async () => {
+    const response = await fetch('/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    if (response.ok) {
+      removeUser();
+      return {"success": true};
+    } else {
+      throw new Error ('Logout failed');
+    }
   };
 
   return { user, setUser, login, logout, register };
