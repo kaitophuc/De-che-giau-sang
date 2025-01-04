@@ -14,7 +14,7 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
   try {
     const existingUser = await User.findOne({microsoftId: profile.id});
     if (existingUser) {
-      sync_microsoft_outlook(existingUser);
+      sync_microsoft_outlook(existingUser, 'manual');
       return done(null, existingUser, {message: 'User found'});
     }
 
@@ -24,7 +24,7 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
       currentUser.microsoftAccessToken = accessToken;
       currentUser.microsoftRefreshToken = refreshToken;
       await currentUser.save();
-      sync_microsoft_outlook(currentUser);
+      sync_microsoft_outlook(currentUser, 'manual');
       return done(null, currentUser, {message: 'Link to Microsoft account successfully'});
     }
 
@@ -37,7 +37,7 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
     })
 
     await newUser.save();
-    sync_microsoft_outlook(newUser);
+    sync_microsoft_outlook(newUser, 'manual');
     done(null, newUser, {message: 'User created successfully'});
   } catch (error) {
     done(error);

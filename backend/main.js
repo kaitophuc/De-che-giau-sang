@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
+const cron = require('node-cron');
 require('./config/authJWT')
 require('./config/authGoogle');
 
@@ -59,3 +60,23 @@ const startServer = async () => {
 }
 
 startServer();
+
+cron.schedule('0 0 * * *', async () => {
+    console.log('Running scheduled task to sync calendars');
+
+    try {
+        const users = await User.find({});
+
+        for (const user of users) {
+            if (user.googleAccessToken) {
+                sync_google_calendar(user, 'auto');
+            }
+
+            if (user.microsoftAccessToken) {
+                sync_microsoft_outlook(user, 'auto');
+            }
+        }
+    } catch (error) {
+        console.error('Error syncing calendars:', error);
+    }
+});
