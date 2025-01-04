@@ -3,7 +3,7 @@ const { Client } = require('@microsoft/microsoft-graph-client');
 const Event = require('../models/Event.model');
 require('isomorphic-fetch');
 
-const sync_google_calendar = async (user) => {
+const sync_google_calendar = async (user, mode) => {
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
@@ -18,12 +18,22 @@ const sync_google_calendar = async (user) => {
   const calendar = google.calendar({ version: 'v3', auth });
 
   const now = new Date();
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(now.getMonth() - 6);
+  const start = new Date();
+
+  switch (mode) {
+    case 'manual':
+      start.setMonth(now.getMonth() - 6);
+      break;
+    case 'auto':
+      start.setDay(now.getDay() - 1);
+      break;
+    default:
+      throw new Error('Invalid mode');
+  }
 
   calendar.events.list({
     calendarId: 'primary',
-    timeMin: sixMonthsAgo.toISOString(),
+    timeMin: start.toISOString(),
     timeMax: now.toISOString(),
     singleEvents: true,
     orderBy: 'startTime',
@@ -51,17 +61,10 @@ const sync_google_calendar = async (user) => {
       }
       console.log("Events from last 6 months", events);
     }
-  })
-
-  // const jwtClient = new google.auth.JWT(
-  //   process.env.GOOGLE_CLIENT_EMAIL,
-  //   null,
-  //   process.env.GOOGLE_PRIVATE_KEY,
-  //   ['https://www.googleapis.com/auth/calendar.readonly'],
-  // )
+  });
 }
 
-const sync_microsoft_outlook = async (user) => {
+const sync_microsoft_outlook = async (user, mode) => {
   const accessToken = user.microsoftAccessToken;
 
   const client = Client.init({
@@ -71,8 +74,18 @@ const sync_microsoft_outlook = async (user) => {
   });
 
   const now = new Date();
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(now.getMonth() - 6);
+  const start = new Date();
+
+  switch (mode) {
+    case 'manual':
+      start.setMonth(now.getMonth() - 6);
+      break;
+    case 'auto':
+      start.setDay(now.getDay() - 1);
+      break;
+    default:
+      throw new Error('Invalid mode');
+  }
 
   try {
     const events = await client
