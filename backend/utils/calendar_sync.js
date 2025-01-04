@@ -1,5 +1,7 @@
 const { google } = require('googleapis');
+const { Client } = require('@microsoft/microsoft-graph-client');
 const Event = require('../models/Event.model');
+require('isomorphic-fetch');
 
 const sync_google_calendar = async (user) => {
   const auth = new google.auth.OAuth2(
@@ -59,6 +61,49 @@ const sync_google_calendar = async (user) => {
   // )
 }
 
+const sync_microsoft_outlook = async (user) => {
+  const accessToken = user.microsoftAccessToken;
+
+  const client = Client.init({
+    authProvider: (done) => {
+      done(null, accessToken);
+    },
+  });
+
+  const now = new Date();
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(now.getMonth() - 6);
+
+  try {
+    const events = await client
+      .api('/me/calendar/events')
+      .filter(`start/dateTime ge '${sixMonthsAgo.toISOString()}' and end/dateTime le '${now.toISOString()}'`)
+      .get();
+
+    console.log("Events from last 6 months", events.value);
+
+    for (let event of events.value) {
+      const startTime = new Date(event.start.dateTime);
+      const endTime = new Date(event.end.dateTime);
+      const newEvent = new Event({
+        title: event.subject,
+        place: event.location.displayName,
+        description: event.bodyPreview,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        userId: user._id,
+      });
+      newEvent.save();
+    }
+
+    // res.status(200).json(events.value);
+  } catch (error) {
+    console.error('The API returned an error: ' + error);
+    // res.status(500).json({ error: 'Failed to fetch events'});
+  }
+}
+
 module.exports = {
   sync_google_calendar,
+  sync_microsoft_outlook,
 };

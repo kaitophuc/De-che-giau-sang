@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { register } = require('../controllers/user/auth');
 require('../config/authJWT');
 require('../config/authGoogle');
+require('../config/authMicrosoft');
 
 const authenticate = require('../middlewares/authenticate');
 
@@ -115,19 +116,6 @@ authRouter.get('/login/failed', (req, res) => {
   })
 })
 
-// authRouter.get('/logout', (req, res, next) => {
-//   req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-
-//     req.session.destroy((err) => {
-//       res.clearCookie('connect.sid');
-//       res.json()
-//     })
-//   })
-// })
-
 authRouter.post('/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -155,10 +143,10 @@ authRouter.get('/google/sync/:userId', (req, res, next) => {
 
 authRouter.get(
   '/google/callback',
-  passport.authenticate('google', {failureRedirect: 'http://localhost:5173/login', successRedirect: 'http://localhost:5173/', session: false}),
+  passport.authenticate('google', {failureRedirect: 'http://localhost:5173/auth', successRedirect: 'http://localhost:5173/', session: false}),
   (req, res) => {
     try {
-      if (!req.user) {
+      if (!req.user || !req.user.googleAccessToken) {
         return res.status(400).send('Authentication failed');
       }
     } catch (error) {
@@ -183,14 +171,21 @@ authRouter.get('/verify-google', (req, res, next) => {
       success: true,
       message: 'Authorized',
     });
-  })(req, res, next);
+  }) (req, res, next);
 });
 
-authRouter.get('/microsoft', passport.authenticate('microsoft', {scope: ['profile', 'email']}));
+authRouter.get('/microsoft/sync/:userId', (req, res, next) => {
+  passport.authenticate('microsoft', {
+    scope: ['openid', 'email', 'profile', 'User.Read', 'Calendars.Read', 'offline_access'],
+    state: req.params.userId,
+    accessType: 'offline',
+    prompt: 'consent',
+  }) (req, res, next);
+});
 
 authRouter.get(
   '/microsoft/callback',
-  passport.authenticate('microsoft', {failureRedirect: 'http://localhost:5173/login', session: false}),
+  passport.authenticate('microsoft', {failureRedirect: 'http://localhost:5173/auth', successRedirect: 'http://localhost:5173', session: false}),
   (req, res) => {
     try {
       if (!req.user || !req.user.microsoftAccessToken) {
@@ -202,5 +197,23 @@ authRouter.get(
     }
   }
 )
+
+authRouter.get('/verify-microsoft', (req, res, next) => {
+  passport.authenticate('jwt', {session: false}, (err, user, info) => {
+    console.log("User", user);
+    console.log("Microsoft Id", user.microsoftId);
+    if (err || !user || user.microsoftId === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: 'Unauthorized'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Authorized',
+    });
+  }) (req, res, next);
+})
 
 module.exports = authRouter;

@@ -55,6 +55,26 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
     }
   }
 
+  const syncMicrosoft = async () => {
+    console.log(`Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`);
+    const response = await fetch('/api/auth/verify-token', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
+      },
+      credentials: 'include',
+    })
+    const data = await response.json();
+    if (data.success) {
+      console.log(data.user);
+      window.location.href = `http://localhost:5050/api/auth/microsoft/sync/${data.user._id}`;
+      console.log('Successfully synced with Microsoft Calendar');
+    } else {
+      console.log('Failed to sync with Microsoft Calendar');
+    }
+  }
+
   return (
     <div className={styles.calendar_navbar}>
       <div className={styles.left}>
@@ -64,7 +84,7 @@ const CalendarNavBar: React.FC<CalendarNavBarProps> = ({view, startDay, changeVi
           {showDropdown && (
             <div className={styles.dropdownContent}>
               <button onClick={syncGoogle}>Sync with Google Calendar</button>
-              
+              <button onClick={syncMicrosoft}>Sync with Microsoft Outlook</button>
             </div>
           )}
         </div>
