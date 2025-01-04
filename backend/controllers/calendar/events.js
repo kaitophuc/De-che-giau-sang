@@ -1,7 +1,7 @@
 const Event = require('../../models/Event.model');
 
 const newEvent = async (req, res) => {
-  const { title, place, startTime, endTime, description } = req.query;
+  const { title, place, startTime, endTime, description, tags } = req.query;
 
   const newEvent = new Event({
     title: title,
@@ -9,6 +9,7 @@ const newEvent = async (req, res) => {
     startTime: new Date(startTime),
     endTime: new Date(endTime),
     description: description,
+    tags: tags ? tags.split(',') : [],
     userId: req.user.id,
   });
 
@@ -35,6 +36,52 @@ const getEvents = async (req, res) => {
   }
 }
 
+const updateEvent = async (req, res) => {
+  const { id, title, place, startTime, endTime, description, tags } = req.query;
+
+  try {
+    const updatedEvent = await Event.findByIdAndUpdate(
+      id,
+      {
+        title: title,
+        place: place,
+        startTime: new Date(startTime),
+        endTime: new Date(endTime),
+        description: description,
+        tags: tags ? tags.split(',') : [],
+      },
+      { new: true }
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).send({ message: 'Event not found' });
+    }
+
+    res.status(200).send({ message: 'Event updated successfully' });
+  } catch (error) {
+    res.status(500).send({ message: 'Error updating event', error: error.message });
+  }
+}
+
+const deleteEvent = async(req, res) => {
+  const { id } = req.query;
+
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(id);
+
+    if (!deletedEvent) {
+      return res.status(404).send({ message: 'Event not found' });
+    }
+
+    res.status(200).send({ message: 'Event deleted successfully' });
+  } catch (error) {
+    res.status(500).send({ message: 'Error deleting event', error: error.message });
+  }
+}
+
 module.exports = {
-  newEvent, getEvents
+  newEvent,
+  getEvents,
+  updateEvent,
+  deleteEvent,
 };

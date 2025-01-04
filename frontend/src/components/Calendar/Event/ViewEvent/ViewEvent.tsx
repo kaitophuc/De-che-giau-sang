@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faXmark, faCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './ViewEvent.module.css';
@@ -21,46 +21,85 @@ interface ViewEventModalProps {
 Modal.setAppElement('#root');
 
 const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) => {
-  if (event === null){
-    return null;
-  }
+  const [title, setTitle] = useState<string>('');
+  const [place, setPlace] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [startDay, setStartDay] = useState<string>('');
+  const [startTime, setStartTime] = useState<Date>();
+  const [endTime, setEndTime] = useState<Date>();
+  
+  // const [selectedFriend, setSelectedFriend] = useState<string>('');
 
-  const [title, setTitle] = useState<string>(event.title || '');
-  const [place, setPlace] = useState<string>(event.place || '');
-  const [description, setDescription] = useState<string>(event.description || '');
-  const [startDay, setStartDay] = useState<string>(event.startTime.toISOString().split('T')[0] || '');
-  const [startTime, setStartTime] = useState<string>(event.startTime || '');
-  const [endTime, setEndTime] = useState<string>(event.endTime || '');
-  const [selectedFriend, setSelectedFriend] = useState<string>('');
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
 
-  console.log("ViewEvent:", event);
+  useEffect(() => {
+    if (event) {
+      setTitle(event.title || '');
+      setPlace(event.place || '');
+      setDescription(event.description || '');
+      setStartDay(event.startTime ? event.startTime.toISOString().split('T')[0] : '');
+      setStartTime(event.startTime || '');
+      setEndTime(event.endTime || '');
+      setTags(event.tags || []);
+    }
+  }, [event]);
+
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTagInput(e.target.value);
+    }
+  
+    const handleTagCreate = () => {
+      if (tagInput) {
+        setTags([...tags, tagInput]);
+      }
+    };
+  
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleTagCreate();
+        setTagInput('');
+      }
+    };
+  
+    const handleDeleteTag = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const tag = e.currentTarget.parentElement!.textContent;
+      setTags(tags.filter(t => t !== tag));
+    }
+  
   const handleSave = async (e: any) => {
-    /*e.preventDefault();
-
-    const startDateTime = new Date(`${startDay}T${startTime}`);
-    const endDateTime = new Date(`${startDay}T${endTime}`);
+    e.preventDefault();
 
     // Create URL with query parameters
     const url = new URL('http://localhost:5050/api/calendar/event');
     const params = new URLSearchParams({
+      id: event._id,
       title: title,
       place: place,
-      startTime: startDateTime.toISOString(),
-      endTime: endDateTime.toISOString(),
-      description: description
+      startTime: startTime!.toISOString(),
+      endTime: endTime!.toISOString(),
+      description: description,
+      tags: tags.join(','),
     });
     url.search = params.toString();
 
     try {
+      console.log(localStorage.getItem('user'));
+
       const response = await fetch(url.toString(), {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`); // Error handling
+        await response.json().then((errorData) => {
+          throw new Error(`${response.status} ${errorData.message}`);
+        })
       }
 
       const responseData = await response.json();
@@ -68,35 +107,27 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
       onClose();
     } catch (error) {
       console.error(error);
-    }*/
-   onClose();
+    }
   };
 
   const handleDelete = async (e: any) => {
-    console.log('Pls implement delete event!');
-    onClose();
-    /*e.preventDefault();
-
-    const startDateTime = new Date(`${startDay}T${startTime}`);
-    const endDateTime = new Date(`${startDay}T${endTime}`);
+    e.preventDefault();
 
     // Create URL with query parameters
     const url = new URL('http://localhost:5050/api/calendar/event');
     const params = new URLSearchParams({
-      title: title,
-      place: place,
-      startTime: startDateTime.toISOString(),
-      endTime: endDateTime.toISOString(),
-      description: description
+      id: event._id,
     });
     url.search = params.toString();
 
     try {
       const response = await fetch(url.toString(), {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')!).authToken}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -108,7 +139,7 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
       onClose();
     } catch (error) {
       console.error(error);
-    }*/
+    }
   };
 
   return (
@@ -156,11 +187,9 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             onFocus={(e) => e.target.type = 'time'}
             className={styles.borderRight}
             value={
-              event.startTime.getHours().toString().padStart(2, '0') + ":" + event.startTime.getMinutes().toString().padStart(2, '0')
+              startTime ? startTime.getHours().toString().padStart(2, '0') + ":" + startTime.getMinutes().toString().padStart(2, '0') : ''
             }
-            onChange={(e) => {
-              setStartTime(e.target.value);
-            }}
+            onChange={(e) => setStartTime(new Date(`${startDay}T${e.target.value}`))}
           />
           <input
             type="text"
@@ -168,9 +197,9 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             placeholder="To"
             onFocus={(e) => e.target.type = 'time'}
             value={
-              event.endTime.getHours().toString().padStart(2, '0') + ":" + event.endTime.getMinutes().toString().padStart(2, '0')
+              endTime ? endTime.getHours().toString().padStart(2, '0') + ":" + endTime.getMinutes().toString().padStart(2, '0') : ''
             }
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) => setEndTime(new Date(`${startDay}T${e.target.value}`))}
           />
         </div>
         {/* <div className={styles.friendSelect}>
@@ -184,6 +213,26 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             <option value="khanh">Khanh</option>
           </select>
         </div> */}
+        <div className={styles.tagContainer}>
+          <input
+            type="text"
+            id="tagInput"
+            placeholder="Add or search tags"
+            value={tagInput}
+            onChange={handleTagInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          <div className={styles.currentTags}>
+            {tags.map(tag => (
+              <div className={styles.tag} key={tag}>
+                {tag}
+                <button onClick={handleDeleteTag} style={{ marginLeft: '7px', marginRight: '3px' }}>
+                  <FontAwesomeIcon icon={faCircleXmark} size="sm" style={{ color: 'rgb(195, 202, 217)'}} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
         <div className={styles.description}>
           <input
             type="text"

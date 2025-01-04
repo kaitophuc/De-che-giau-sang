@@ -6,6 +6,7 @@ const EventSchema = new mongoose.Schema({
   startTime: Date,
   endTime: Date,
   description: String,
+  tags: [String],
   userId: String,
 });
 
