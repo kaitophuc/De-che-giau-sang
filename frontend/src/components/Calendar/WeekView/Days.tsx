@@ -5,6 +5,7 @@ import { useLocalStorage } from '../../../hooks/useLocalStorage';
 type DaysProps = {
   startDay: Date | undefined;
   viewEvent: (event: Event) => void;
+  events: Event[];
 }
 
 type Event = {
@@ -17,51 +18,8 @@ type Event = {
   // color: string;
 }
 
-const Days: React.FC<DaysProps> = ({startDay, viewEvent}) => {
-  const [events, setEvents] = useState<Array<Event>>([]);
-  const { getItem } = useLocalStorage();
-
-  useEffect(() => {
-    if (startDay) {
-      const startDayString = startDay.toISOString();
-      let endDay = new Date(startDay);
-      endDay.setDate(startDay.getDate() + 7);
-      endDay.setSeconds(startDay.getSeconds() - 1);
-      const endDayString = endDay.toISOString();
-
-      console.log(startDay);
-      console.log(endDay);
-
-      const user = getItem('user');
-      const authToken = user ? JSON.parse(user).authToken : null;
-
-      fetch(`/api/calendar/event?startTime=${startDayString}&endTime=${endDayString}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          }
-        }
-      ).then((response) => {
-        if (!response.ok) {
-          return response.json().then((errorData) => {
-            throw new Error(`${response.status} ${errorData.message}`);
-          });
-        }
-        return response.json();
-      }).then((data) => {
-        const processedData = data.map((event: any) => ({
-          ...event,
-          startTime: new Date(event.startTime),
-          endTime: new Date(event.endTime),
-        }));
-        setEvents(processedData);
-        console.log(events);
-      });
-    }
-  }, [startDay]);
-
+const Days: React.FC<DaysProps> = ({startDay, viewEvent, events}) => {
+  
   const handleEventClick = (event: Event) => {
     console.log('You clicked on event:', event);
     viewEvent(event);

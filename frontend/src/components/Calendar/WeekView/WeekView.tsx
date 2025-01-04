@@ -18,9 +18,10 @@ type Event = {
 interface WeekViewProps {
   startDay: Date | undefined;
   viewEvent: (event: Event) => void;
+  events: Event[];
 }
 
-const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
+const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent, events}) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -123,7 +124,7 @@ const WeekView: React.FC<WeekViewProps> = ({startDay, viewEvent}) => {
         }
         {hourLines}
         <div className={styles.calendar_sideTime}>{hourBoxes}</div>
-        <Days startDay={startDay} viewEvent={viewEvent}/>
+        <Days startDay={startDay} viewEvent={viewEvent} events={events}/>
       </div>
     </div>
   );
