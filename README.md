@@ -18,7 +18,7 @@ cd backend
 npm start
 ```
 
-Open another terminal, and start the frontend:
+Open another terminal, and start the frontend server:
 
 ```bash
 cd frontend
