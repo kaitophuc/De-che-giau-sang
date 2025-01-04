@@ -1,0 +1,40 @@
+/* margin: top | right | bottom | left */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  width: 100%;
+}
+
+.sidebar_expanded {
+  width: 200px;
+}
+
+.sidebar_collapsed {
+  width: 75px;
+}
+
+.page {
+  margin: 37px 30px;
+}
+
+.top {
+  margin: 25.5px 30px 10px 30px;
+}
+
+.flex_row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.page_name {
+  padding: 5px 0 0 0;
+  margin-left: 20px;
+  margin-top: -7px;
+}
+
+.icon_color {
+  color: rgb(195, 202, 217);
+}
