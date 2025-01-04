@@ -1,4 +1,4 @@
-const Event = require('../../models/Event.model');
+const Event = require('../models/Event.model');
 
 const newEvent = async (req, res) => {
   const { title, place, startTime, endTime, description, tags } = req.query;

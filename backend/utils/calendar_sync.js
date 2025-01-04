@@ -108,11 +108,8 @@ const sync_microsoft_outlook = async (user, mode) => {
       });
       newEvent.save();
     }
-
-    // res.status(200).json(events.value);
   } catch (error) {
     console.error('The API returned an error: ' + error);
-    // res.status(500).json({ error: 'Failed to fetch events'});
   }
 }
 

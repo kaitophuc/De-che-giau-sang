@@ -1,6 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
 import styles from './Days.module.css';
-import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 type DaysProps = {
   startDay: Date | undefined;
@@ -18,8 +16,7 @@ type Event = {
   // color: string;
 }
 
-const Days: React.FC<DaysProps> = ({startDay, viewEvent, events}) => {
-  
+const Days: React.FC<DaysProps> = ({viewEvent, events}) => {
   const handleEventClick = (event: Event) => {
     console.log('You clicked on event:', event);
     viewEvent(event);
@@ -60,10 +57,6 @@ const Days: React.FC<DaysProps> = ({startDay, viewEvent, events}) => {
               <div className={styles.eventTime}>{startTimeString}</div>
               <div className={styles.eventTime}>{endTimeString}</div>
             </div>
-            {/* <p>{new Date(event.startTime).toDateString()}</p>
-            <p>{new Date(event.endTime).toDateString()}</p>
-            <p>{event.description}</p>
-            <p>{event.place}</p> */}
           </div>
         )
       })}

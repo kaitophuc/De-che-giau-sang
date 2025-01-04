@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import styles from './ViewEvent.module.css';
 
@@ -11,11 +9,10 @@ interface ViewEventModalProps {
   event: any;
   isOpen: boolean;
   onClose: () => void;
-  top?: number;
-  left?: number;
-  right?: number;
-  bottom?: number;
-  title?: string
+  // top?: number;
+  // left?: number;
+  // right?: number;
+  // bottom?: number;
 }
 
 Modal.setAppElement('#root');
@@ -27,8 +24,6 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
   const [startDay, setStartDay] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
   const [endTime, setEndTime] = useState<Date>();
-  
-  // const [selectedFriend, setSelectedFriend] = useState<string>('');
 
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -202,17 +197,6 @@ const ViewEvent: React.FC<ViewEventModalProps> = ({ event, isOpen, onClose }) =>
             onChange={(e) => setEndTime(new Date(`${startDay}T${e.target.value}`))}
           />
         </div>
-        {/* <div className={styles.friendSelect}>
-          <select
-            id="friendSelect"
-            value={selectedFriend}
-            onChange={(e) => setSelectedFriend(e.target.value)}
-            className={styles.friendDropdown}
-          >
-            <option value="" disabled>Select a friend</option>
-            <option value="khanh">Khanh</option>
-          </select>
-        </div> */}
         <div className={styles.tagContainer}>
           <input
             type="text"

@@ -43,12 +43,6 @@ const SideBar: React.FC<SideBarProps> = ({ showSideBar, sideBar}) => {
             <span className={styles.page_name}>{showText ? "Tasks" : null}</span>
           </Link>
         </li>
-        {/* <li className={styles.page}>
-          <Link to="/messages" className={styles.flex_row}>
-            <MessagesIcon fill="rgb(195, 202, 217)"/>
-            <span className={styles.page_name}>{showText ? "Messages" : null}</span>
-          </Link>
-        </li> */}
       </ul>
     </div>
   );

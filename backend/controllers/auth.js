@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../../models/User.model');
+const User = require('../models/User.model');
 
 const register = async (req, res) => {
   try {
