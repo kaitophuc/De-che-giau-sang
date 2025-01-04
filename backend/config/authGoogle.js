@@ -14,8 +14,6 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
   try {
     const existingUser = await User.findOne({googleId: profile.id});
     if (existingUser) {
-      // existingUser.googleRefreshToken = refreshToken;
-      // await existingUser.save();
       sync_google_calendar(existingUser);
       return done(null, existingUser, {message: 'User found'});
     }
@@ -39,7 +37,7 @@ const verify = async (request, accessToken, refreshToken, profile, done) => {
     })
     
     await newUser.save();
-    sync_google_calendar(currentUser);
+    sync_google_calendar(newUser);
     done(null, newUser, {message: 'User created successfully'});
   } catch (error) {
     done(error);

@@ -31,6 +31,9 @@ const UserSchema = new moongoose.Schema({
   microsoftAccessToken: {
     type: String,
   },
+  microsoftRefreshToken: {
+    type: String,
+  },
   friends: {
     type: [String],
   }
