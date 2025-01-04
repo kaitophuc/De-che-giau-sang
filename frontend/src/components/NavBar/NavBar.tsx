@@ -22,11 +22,14 @@ function NavBar() {
   return (
     <nav className={styles.navbar_background}>
       <ul className={styles.navbar_content}>
-        <li className={styles.page}>
+        {/* <li className={styles.page}>
           <Link to="/about">About us</Link>
         </li>
         <li className={styles.page}>
           <Link to="/contact">Contacts</Link>
+        </li> */}
+        <li className={styles.page}>
+          <Link to="/"><div className={styles.appName}>Schedura</div></Link>
         </li>
       </ul>
       <div className={styles.page}>
