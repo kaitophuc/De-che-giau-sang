@@ -1,36 +1,26 @@
 # Calendar management system
 
-All-in-one calendar management system. Have the ability to import Google Calendar and Microsoft Outlook and combine into one. It can also stream data, which means if you have an invitation into Google Calendar, this calaendar management system will also get updated.
+Schedura is a comprehensive calendar events management system designed to keep you organized. The seamlessly synchronizes with Google Calendar and Microsoft Outlook, ensuring all your events are up-to-date and consolidated in one place. It also supports organizing events by creating and managing custom tags.
 
-# Installation guide
+## Installation guide
 
 First, install necessary modules:
 
-```
-cd frontend
-npm install
-cd ../backend
-npm install
+```bash
+npm install --prefix ./frontend
+npm install --prefix ./backend
 ```
 
 Then, in one terminal, from the root directory of the project, start the backend server:
 
-For Window:
-
-```
+```bash
 cd backend
-node --env-file=config.env main
-```
-
-For Linux:
-```
-cd backend
-dotenv -e config.env node main.js
+npm start
 ```
 
 Open another terminal, and start the frontend:
 
-```
+```bash
 cd frontend
 npm run dev
 ```
