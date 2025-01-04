@@ -6,7 +6,6 @@ import RegisterComponent from '../components/Auth/RegisterComponent';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-
     const [viewLogin, setViewLogin] = useState(true);
     const [viewRegister, setViewRegister] = useState(false);
     const navigate = useNavigate();

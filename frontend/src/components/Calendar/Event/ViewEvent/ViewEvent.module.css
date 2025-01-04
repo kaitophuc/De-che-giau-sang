@@ -86,7 +86,6 @@ input::placeholder {
   display: flex;
   flex-direction: row;
   width: 100%;
-  /* border: 1px solid var(--main-background-color); */
 }
   
 .closeButton {
@@ -97,7 +96,6 @@ input::placeholder {
 .submitButton {
   width: 100%;
   border-left: 1px solid var(--main-background-color);
-  /* margin: auto; */
 }
 
 /* Tags */

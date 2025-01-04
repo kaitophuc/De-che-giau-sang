@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import { useLocalStorage } from '../../../../hooks/useLocalStorage';
 import styles from './AddEvent.module.css';
@@ -11,12 +9,11 @@ import styles from './AddEvent.module.css';
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  top?: number;
-  left?: number;
-  right?: number;
-  bottom?: number;
-  title?: string
-  
+  // top?: number;
+  // left?: number;
+  // right?: number;
+  // bottom?: number;
+  // title?: string
 }
 
 Modal.setAppElement('#root');
@@ -28,7 +25,6 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
   const [startDay, setStartDay] = useState<string>('');
   const [startTime, setStartTime] = useState<Date>();
   const [endTime, setEndTime] = useState<Date>();
-  // const [selectedFriend, setSelectedFriend] = useState<string>('');
 
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -196,25 +192,6 @@ const AddEvent: React.FC<EventModalProps> = ({ isOpen, onClose }) => {
               </div>
             ))}
           </div>
-          {/* {tagInput && (
-            <div className={styles.dropdown}>
-              {filteredTags.length > 0 ? (
-                filteredTags.map(tag => (
-                  <button
-                    key={tag}
-                    className={styles.dropdownItem}
-                    onClick={() => handleTagSelect(tag)}
-                  >
-                    {tag}
-                  </button>
-                ))
-              ) : (
-                <div className={styles.dropdownItem} onClick={handleTagCreate}>
-                  Create tag "{tagInput}"
-                </div>
-              )}
-            </div>
-          )} */}
         </div>
         <div className={styles.description}>
           <input

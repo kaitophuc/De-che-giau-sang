@@ -30,21 +30,21 @@
 }
 
 .calendar_main::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
+  width: 8px;
   padding: 1px;
 }
 
 .calendar_main::-webkit-scrollbar-track {
-  background: rgb(245, 246, 247); /* Background of the scrollbar track */
+  background: rgb(245, 246, 247);
 }
 
 .calendar_main::-webkit-scrollbar-thumb {
-  background: #AAA; /* Color of the scrollbar thumb */
-  border-radius: 6px; /* Rounded corners for the scrollbar thumb */
+  background: #AAA;
+  border-radius: 6px;
 }
 
 .calendar_main::-webkit-scrollbar-thumb:hover {
-  background: #777; /* Color of the scrollbar thumb on hover */
+  background: #777;
 }
 
 .hourLine {

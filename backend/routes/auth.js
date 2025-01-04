@@ -1,12 +1,10 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { register } = require('../controllers/user/auth');
+const { register } = require('../controllers/auth');
 require('../config/authJWT');
 require('../config/authGoogle');
 require('../config/authMicrosoft');
-
-const authenticate = require('../middlewares/authenticate');
 
 const authRouter = express.Router();
 
@@ -39,19 +37,6 @@ authRouter.post('/login', (req, res, next) => {
   }) (req, res);
 });
 
-// authRouter.get('/verify-token', passport.authenticate('jwt', {session: false}), (req, res) => {
-//   const userPublicData = {
-//     _id: req.user._id,
-//     username: req.user.username,
-//     email: req.user.email,
-//   }
-//   // console.log(userPublicData);
-//   res.status(200).json({
-//     success: true,
-//     user: userPublicData,
-//   })
-// })
-
 authRouter.get('/verify-token', (req, res, next) => {
   passport.authenticate('jwt', {session: false}, (err, user, info) => {
     if (err || !user) {
@@ -75,30 +60,6 @@ authRouter.get('/verify-token', (req, res, next) => {
     });
   })(req, res, next);
 });
-
-// authRouter.get('/verify-google', (req, res, next) => {
-//   passport.authenticate('google', {session: false}, (err, user, info) => {
-//     if (err || !user) {
-//       return res.status(500).json({
-//         success: false,
-//         message: 'Unauthorized'
-//       });
-//     }
-
-//     console.log("User", user);
-
-//     const userPublicData = {
-//       _id: user._id,
-//       username: user.username,
-//       email: user.email,
-//     }
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Authorized',
-//     });
-//   })(req, res, next);
-// })
 
 authRouter.get('/login/success', (req, res) => {
   if (req.user) {
