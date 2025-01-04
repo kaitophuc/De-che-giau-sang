@@ -1,0 +1,17 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment: 
+      - NODE_ENV=debug
+    ports:
+      - "3000:3000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:8080"
